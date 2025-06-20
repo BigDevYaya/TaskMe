@@ -1,0 +1,182 @@
+[
+  {
+    "username": "Israel Yaya",
+    "message": "Have you done the job?",
+    "unreadCount": 1,
+    "date": "Yesterday"
+  },
+  {
+    "username": "Ada Lovelace",
+    "message": "I'll send you the report shortly.",
+    "unreadCount": 2,
+    "date": "Today"
+  },
+  {
+    "username": "Elon Tolu",
+    "message": "Meeting rescheduled to 3 PM.",
+    "unreadCount": 0,
+    "date": "2 days ago"
+  },
+  {
+    "username": "Grace Hopper",
+    "message": "The code has a small bug.",
+    "unreadCount": 5,
+    "date": "Today"
+  },
+  {
+    "username": "Kofi Mensah",
+    "message": "Can we talk later?",
+    "unreadCount": 0,
+    "date": "Yesterday"
+  },
+  {
+    "username": "Teni Ade",
+    "message": "Updated the task status.",
+    "unreadCount": 1,
+    "date": "3 days ago"
+  },
+  {
+    "username": "Zainab Yusuf",
+    "message": "Here is the document you asked for.",
+    "unreadCount": 0,
+    "date": "Today"
+  },
+  {
+    "username": "Chuka Obi",
+    "message": "All done on my end!",
+    "unreadCount": 3,
+    "date": "Yesterday"
+  },
+  {
+    "username": "Fatima Bello",
+    "message": "Do you need help with the UI?",
+    "unreadCount": 0,
+    "date": "2 days ago"
+  },
+  {
+    "username": "John Doe",
+    "message": "Let’s finalize this tomorrow.",
+    "unreadCount": 2,
+    "date": "Just now"
+  },
+  {
+    "username": "Sophia West",
+    "message": "Check your email when you can.",
+    "unreadCount": 1,
+    "date": "Today"
+  },
+  {
+    "username": "Emeka Uzoma",
+    "message": "It’s looking great!",
+    "unreadCount": 0,
+    "date": "Yesterday"
+  },
+  {
+    "username": "Aisha Ahmed",
+    "message": "Can I join the Zoom call?",
+    "unreadCount": 4,
+    "date": "Today"
+  },
+  {
+    "username": "Daniel Ekene",
+    "message": "Thanks for the update.",
+    "unreadCount": 0,
+    "date": "3 days ago"
+  },
+  {
+    "username": "Lilian Opoku",
+    "message": "Your design was approved!",
+    "unreadCount": 1,
+    "date": "Today"
+  },
+  {
+    "username": "Musa Tanko",
+    "message": "Client needs feedback by noon.",
+    "unreadCount": 0,
+    "date": "Yesterday"
+  },
+  {
+    "username": "Anita James",
+    "message": "Let’s meet after lunch.",
+    "unreadCount": 2,
+    "date": "Today"
+  },
+  {
+    "username": "Kelvin Bright",
+    "message": "Almost done with the backend.",
+    "unreadCount": 0,
+    "date": "4 days ago"
+  },
+  {
+    "username": "Nneka Oko",
+    "message": "Did you see my last message?",
+    "unreadCount": 3,
+    "date": "Yesterday"
+  },
+  {
+    "username": "Abdul Sulaiman",
+    "message": "Need your approval before proceeding.",
+    "unreadCount": 0,
+    "date": "2 days ago"
+  },
+  {
+    "username": "Queen Eze",
+    "message": "Let's schedule a call.",
+    "unreadCount": 1,
+    "date": "Today"
+  },
+  {
+    "username": "Tomide Fisayo",
+    "message": "Added the new feature request.",
+    "unreadCount": 0,
+    "date": "Yesterday"
+  },
+  {
+    "username": "Zara Musa",
+    "message": "We should review this together.",
+    "unreadCount": 1,
+    "date": "Today"
+  },
+  {
+    "username": "Uche Okafor",
+    "message": "Is the server down?",
+    "unreadCount": 2,
+    "date": "Just now"
+  },
+  {
+    "username": "Lola Shonibare",
+    "message": "Everything's good to go.",
+    "unreadCount": 0,
+    "date": "Yesterday"
+  },
+  {
+    "username": "Victor Lawal",
+    "message": "The fix is live now.",
+    "unreadCount": 3,
+    "date": "Today"
+  },
+  {
+    "username": "Chidera Nwachukwu",
+    "message": "Need clarity on this requirement.",
+    "unreadCount": 0,
+    "date": "2 days ago"
+  },
+  {
+    "username": "Ahmed Sule",
+    "message": "Test cases are failing.",
+    "unreadCount": 2,
+    "date": "Today"
+  },
+  {
+    "username": "Mariam Owolabi",
+    "message": "Thanks! You saved my day.",
+    "unreadCount": 0,
+    "date": "Yesterday"
+  },
+  {
+    "username": "Tolu Ajayi",
+    "message": "All done. Awaiting your review.",
+    "unreadCount": 1,
+    "date": "Today"
+  }
+]

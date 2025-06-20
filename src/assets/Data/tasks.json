@@ -1,0 +1,101 @@
+[
+  {
+    "id": "1",
+    "title": "Take a short product survey",
+    "description": "Answer 10 quick questions about toothpaste packaging.",
+    "category": "Survey",
+    "price": 50,
+    "date": "2025-06-18",
+    "uploadedBy": "john.doe@example.com"
+  },
+  {
+    "id": "2",
+    "title": "Test a mobile app",
+    "description": "Download and use an app for 5 minutes and report bugs.",
+    "category": "Testing",
+    "price": 150,
+    "date": "2025-06-17",
+    "uploadedBy": "testerhub@demo.com"
+  },
+  {
+    "id": "3",
+    "title": "Transcribe audio",
+    "description": "Convert a short 2-minute audio into text.",
+    "category": "Transcription",
+    "price": 200,
+    "date": "2025-06-17",
+    "uploadedBy": "israel.yaya@example.com"
+  },
+  {
+    "id": "4",
+    "title": "Review a website layout",
+    "description": "Give UI/UX feedback on a landing page design.",
+    "category": "Design",
+    "price": 80,
+    "date": "2025-06-18",
+    "uploadedBy": "designpulse@task.com"
+  },
+  {
+    "id": "5",
+    "title": "Create a meme",
+    "description": "Make a funny meme using a provided template.",
+    "category": "Creative",
+    "price": 30,
+    "date": "2025-06-16",
+    "uploadedBy": "memeLord@funmail.com"
+  },
+  {
+    "id": "6",
+    "title": "Label images",
+    "description": "Tag 10 images with relevant labels.",
+    "category": "AI Training",
+    "price": 100,
+    "date": "2025-06-15",
+    "uploadedBy": "data.ai@cloud.org"
+  },
+  {
+    "id": "7",
+    "title": "Write a tweet",
+    "description": "Craft a creative tweet for a brand campaign.",
+    "category": "Marketing",
+    "price": 60,
+    "date": "2025-06-15",
+    "uploadedBy": "brandvoice@xyz.com"
+  },
+  {
+    "id": "8",
+    "title": "Translate a paragraph",
+    "description": "Translate a short paragraph from English to Spanish.",
+    "category": "Language",
+    "price": 70,
+    "date": "2025-06-16",
+    "uploadedBy": "lang.tasks@globe.io"
+  },
+  {
+    "id": "9",
+    "title": "Check broken links",
+    "description": "Go through a webpage and report any broken links.",
+    "category": "Maintenance",
+    "price": 90,
+    "date": "2025-06-14",
+    "uploadedBy": "fixweb@service.com"
+  },
+  {
+    "id": "10",
+    "title": "Record pronunciation",
+    "description": "Read and record 5 English words.",
+    "category": "Voice",
+    "price": 40,
+    "date": "2025-06-12",
+    "uploadedBy": "speechlab@tools.ai"
+  },
+  {
+    "id": "11",
+    "title": "Rate a logo design",
+    "description": "Rate 3 logo options from 1 to 5.",
+    "category": "Design",
+    "price": 30,
+    "date": "2025-06-18",
+    "uploadedBy": "visualvote@design.co"
+    }
+]

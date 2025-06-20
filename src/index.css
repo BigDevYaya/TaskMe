@@ -1,0 +1,74 @@
+@import 'tailwindcss';
+@import 'react-calendar/dist/Calendar.css';
+
+
+.react-calendar__tile.bg-green-200 {
+  background-color: #bbf7d0 !important;
+  color: #166534 !important;
+  font-weight: 600;
+}
+
+/* Selected Day */
+.react-calendar__tile--active {
+  background-color: #6366f1 !important;
+  color: white !important;
+  border-radius: 50%;
+}
+
+/* Highlighted Days (e.g. completed task days) */
+.highlighted-day {
+  background-color: #bbf7d0 !important;
+  color: #065f46 !important;
+  font-weight: 600;
+  border-radius: 50%;
+}
+
+/* Optional: Hover effect */
+.react-calendar__tile:hover {
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+}
+
+button{
+  cursor: pointer;
+}
+
+fieldset{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+
+
+@layer utilities{
+    @keyframes slideDown {
+        0% {
+            opacity: 0.5;
+            max-height: 0;
+        }
+        100%{
+            opacity: 1;
+            max-height: 500px;
+        }
+    }
+
+    .animate-SlideDown{
+        animation: slideDown 1s ease-out forwards;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in {
+      animation: fade-in 0.2s ease-out;
+    }
+}
