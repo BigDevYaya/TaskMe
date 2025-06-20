@@ -9,9 +9,10 @@ import { routes } from "./Utils/routes"
 import UploadedTasks from "./Pages/UploadedTasks"
 import TaskDetailPage from "./Pages/TaskDetail"
 import Login from './Pages/Login'
+import SignUp from "./Pages/SignUp"
 
 function App() {
-  const user = true
+  const user = false
   return (
     <Routes>
       {
@@ -27,7 +28,7 @@ function App() {
       </Route> 
       }
       <Route path="/" element={<Login />} />
-      <Route path="*" element={<div>404 Not Found</div>} />
+      <Route path="/signup" element={<SignUp />} />
     </Routes>
   )
 }

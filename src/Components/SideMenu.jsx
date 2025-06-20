@@ -19,7 +19,6 @@ const SideMenu = () => {
       {/* Title */}
       <img src="./TaskMe.png" className='rounded-lg w-32 h-fit self-center'  alt="Logo" />
 
-      {/* Scrollable nav area */}
       <div className='flex-1 overflow-y-auto pr-1'>
         <nav>
           <ul className='flex flex-col gap-5'>
