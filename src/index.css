@@ -33,7 +33,11 @@ button{
   cursor: pointer;
 }
 
-
+.authbg{
+  background-image: url('/other.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
 fieldset{
   display: flex;
