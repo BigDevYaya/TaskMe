@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function SubmissionForm({ taskId }) {
+const SubmissionForm = ({ taskId }) => {
   const [file, setFile] = useState(null)
   const [submitting, setSubmitting] = useState(false)
 
@@ -32,3 +32,5 @@ export default function SubmissionForm({ taskId }) {
     </form>
   )
 }
+
+export default SubmissionForm
