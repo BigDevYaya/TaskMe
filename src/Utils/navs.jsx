@@ -4,7 +4,8 @@ import {
     CheckCircle2,
     MessageSquare,
     Settings,
-    ArrowUpFromLine
+    ArrowUpFromLine,
+    Bell
 } from 'lucide-react'
 
 
@@ -35,6 +36,12 @@ export const items = [
         },
         {
             id : 5,
+            icon : <Bell />,
+            text : 'Notifications',
+            to: '/notification'
+        },
+        {
+            id : 6,
             icon : <Settings className='w-5 h-5' />,
             text : 'Settings',
             to: '/settings'

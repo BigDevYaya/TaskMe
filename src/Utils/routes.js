@@ -9,5 +9,6 @@ export const routes = {
     completedTasks: '/completedtasks',
     settings: '/settings',
     helpCenter: '/helpcenter',
-    uploaded: '/uploadedtasks'
+    uploaded: '/uploadedtasks',
+    notifications : '/notification'
 }

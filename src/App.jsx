@@ -10,9 +10,10 @@ import UploadedTasks from "./Pages/UploadedTasks"
 import TaskDetailPage from "./Pages/TaskDetail"
 import Login from './Pages/Login'
 import SignUp from "./Pages/SignUp"
+import Notifications from "./Pages/Notifications"
 
 function App() {
-  const user = false
+  const user = true
   return (
     <Routes>
       {
@@ -25,6 +26,7 @@ function App() {
         <Route path={routes.helpCenter} element={<HelpCenter />} />
         <Route path={routes.uploaded} element={<UploadedTasks />} />
         <Route path={routes.taskdetail} element={<TaskDetailPage />} />
+        <Route path={routes.notifications} element={<Notifications />} />
       </Route> 
       }
       <Route path="/" element={<Login />} />

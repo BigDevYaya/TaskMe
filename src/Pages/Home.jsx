@@ -16,6 +16,7 @@ const Home = () => {
   const isUploadTasksPage = location.pathname.includes('uploadedtasks');
   const isHelpCenterPage = location.pathname.includes('helpcenter');
   const isTaskDetailPage = location.pathname.includes('task-')
+  const isNotificationsPage = location.pathname.includes('notification')
 
   function getHeader() {
   if (isUploadTasksPage) return <Header title="My Tasks" explore={<Explore className={'flex'} />} />;
@@ -24,6 +25,7 @@ const Home = () => {
   if (isMessagesPage) return null;
   if (isExploreTasksPage) return <Header title="Explore Tasks" explore={<Explore />} />;
   if (isTaskDetailPage) return null;
+  if (isNotificationsPage) return null;
   return <Header title="Dashboard" />;
 }
 

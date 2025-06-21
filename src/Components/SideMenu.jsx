@@ -7,7 +7,7 @@ const SideMenu = () => {
   const [selectedID, setSelectedID] = useState(() => {
     const saved = sessionStorage.getItem('selectedID')
 
-    return saved ? JSON.parse(saved) : null
+    return saved ? JSON.parse(saved) : 1
   });
 
   useEffect(()=> {
