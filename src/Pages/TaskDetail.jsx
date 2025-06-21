@@ -1,10 +1,10 @@
 import React from 'react'
 import { useParams } from 'react-router'
-import TaskHeader from '../components/task/TaskHeader'
-import TaskInstructions from '../components/task/TaskInstructions'
-import TaskAttachments from '../components/task/TaskAttachments'
-import TaskMeta from '../components/task/TaskMeta'
-import SubmissionForm from '../components/task/SubmissionForm'
+import TaskHeader from '../Components/task/TaskHeader'
+import TaskInstructions from '../Components/task/TaskInstructions'
+import TaskAttachments from '../Components/task/TaskAttachments'
+import TaskMeta from '../Components/task/TaskMeta'
+import SubmissionForm from '../Components/task/SubmissionForm'
 
 const demoTasks = [
   {

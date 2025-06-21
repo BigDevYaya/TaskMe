@@ -2,7 +2,7 @@ import React from 'react'
 import { format } from 'date-fns'
 import { User, Tag, Circle } from 'lucide-react'
 
-export default function TaskHeader({ title, category, uploader, status, reward, date }) {
+const  TaskHeader = ({ title, category, uploader, status, reward, date }) => {
   return (
     <div className="bg-white shadow rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center">
       <div>
@@ -20,3 +20,5 @@ export default function TaskHeader({ title, category, uploader, status, reward, 
     </div>
   )
 }
+
+export default TaskHeader

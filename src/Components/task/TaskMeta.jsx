@@ -2,7 +2,7 @@ import React from 'react'
 import { Users, Calendar } from 'lucide-react'
 import { format } from 'date-fns'
 
-const TaskMeta = ({ performedCount, deadline }) {
+const TaskMeta = ({ performedCount, deadline }) => {
   return (
     <div className="bg-white shadow rounded-xl p-4 flex gap-6 text-sm text-gray-600">
       <div className="flex items-center gap-2">

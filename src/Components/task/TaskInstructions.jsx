@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function TaskInstructions({ instructions }) {
+const TaskInstructions = ({ instructions }) => {
   return (
     <div className="bg-white shadow rounded-xl p-6">
       <h2 className="text-lg font-semibold text-gray-800 mb-2">Instructions</h2>
@@ -8,3 +8,5 @@ export default function TaskInstructions({ instructions }) {
     </div>
   )
 }
+
+export default TaskInstructions

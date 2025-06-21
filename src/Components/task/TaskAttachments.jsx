@@ -1,7 +1,7 @@
 import React from 'react'
 import { Paperclip } from 'lucide-react'
 
-export default function TaskAttachments({ attachments = [] }) {
+const TaskAttachments = ({ attachments = [] }) => {
   if (!attachments.length) return null
   return (
     <div className="bg-white shadow rounded-xl p-6">
@@ -19,3 +19,5 @@ export default function TaskAttachments({ attachments = [] }) {
     </div>
   )
 }
+
+export default TaskAttachments
