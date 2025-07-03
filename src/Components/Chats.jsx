@@ -14,7 +14,7 @@ const Chats = () => {
 
   
   return (
-    <div className='flex-2 flex flex-col justify-between h-full '>
+    <div className='flex-2 flex flex-col justify-between   h-full '>
       <div className='flex items-center justify-between p-4 border-b border-gray-200 mx-2'>
         <div className='flex items-center gap-4'>
     {/* Avatar */}

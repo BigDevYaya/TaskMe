@@ -1,67 +1,67 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import TaskHeader from '../Components/task/TaskHeader'
 import TaskInstructions from '../Components/task/TaskInstructions'
 import TaskAttachments from '../Components/task/TaskAttachments'
 import TaskMeta from '../Components/task/TaskMeta'
 import SubmissionForm from '../Components/task/SubmissionForm'
+import { collection, getDoc,doc } from 'firebase/firestore'
+import { db } from '../Utils/firebase'
 
-const demoTasks = [
-  {
-    id: '0',
-    title: 'Follow us on Instagram',
-    category: 'Social Media',
-    postedBy: 'Israel Yaya',
-    status: 'open',
-    price: 50,
-    createdAt: new Date(),
-    performedCount: 24,
-    deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    description: 'Follow our Instagram account and like the 3 most recent posts.',
-    attachments: [
-      { name: 'Example Screenshot.png', url: '#' },
-    ],
-  },
-  {
-    id: '1',
-    title: 'Submit Product Survey',
-    category: 'Survey',
-    postedBy: 'Grace Noah',
-    status: 'open',
-    price: 100,
-    createdAt: new Date(),
-    performedCount: 10,
-    deadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-    description: 'Complete this short product survey to help improve our service.',
-    attachments: [],
-  },
-  // Add more demo tasks as needed
-]
+
 
 export default function TaskDetailPage() {
   const { taskId } = useParams()
+  const [taskDetails, setTaskDetails] = useState({})
+  const [uploaderEmail, setUploaderEmail] = useState('')
   const fake = taskId.slice(-1)
-  const task = demoTasks.find(t => t.id === fake)
+  // const task = demoTasks.find(t => t.id === fake)
 
-  if (!task) return <p className="p-6 text-center">Task not found.</p>
+  useEffect(() => {
+  const fetchTaskdetails = async () => {
+    try{
+      const taskDoc = await getDoc(doc(db, 'tasks', taskId))
+      if(taskDoc.exists()) {
+        const taskData = taskDoc.data()
+        const taskCreatorId = taskData.uploadedBy
+        const taskCreator = await getDoc(doc(db, 'users', taskCreatorId))
+        const taskCreatorData = taskCreator.data()
+        setUploaderEmail(taskCreatorData.email)
+        setTaskDetails(taskData)
+      }
+    } catch(err) {
+      console.error('An Error Ocurred: ', err.message)
+    }
+  }
+
+  fetchTaskdetails()
+}, [])
+
+  if (!taskDetails) return <p className="p-6 text-center">Task not found.</p>
 
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-6">
       <TaskHeader
-        title={task.title}
-        category={task.category}
-        uploader={task.postedBy}
-        status={task.status}
-        reward={task.price}
-        date={task.createdAt}
+        title={taskDetails.title}
+        category={taskDetails.category}
+        uploader={uploaderEmail}
+        status={taskDetails.status}
+        reward={taskDetails.commissionPrice}
+        date={taskDetails.createdAt?.toDate()}
       />
       <TaskMeta
-        performedCount={task.performedCount}
-        deadline={task.deadline}
+        performedCount={taskDetails.numberOfPeople}
+        deadline={taskDetails.deadline}
       />
-      <TaskInstructions instructions={task.description} />
-      <TaskAttachments attachments={task.attachments} />
-      <SubmissionForm taskId={task.id} />
+      <TaskInstructions 
+      instructions={taskDetails.description} 
+      />
+      <TaskAttachments 
+      attachments={taskDetails.attachments} 
+      />
+      <SubmissionForm 
+      taskId={taskId} 
+      />
     </div>
   )
 }

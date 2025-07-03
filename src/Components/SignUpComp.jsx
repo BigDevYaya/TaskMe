@@ -1,12 +1,21 @@
 import { useState } from "react"
-import { Link } from "react-router" 
+import { Link, Navigate, useNavigate } from "react-router" 
+import { auth } from "../Utils/firebase"
 import { EyeClosed, Eye } from "lucide-react"
 import { Formik } from "formik"
+import { routes }  from '../Utils/routes'
 import { signupSchema } from "../Utils/schemas/schema"
+import { useAuthStore } from "../Utils/useAuthStore"
+
+import toast from "react-hot-toast"
+
+
 
 
 const SignUpComp = () => {
     const [showPassword, setShowPassword] = useState(false)
+    const navigate = useNavigate();
+    const { register, isLoading } = useAuthStore()
 
     function handleIconClick() {
         setShowPassword(!showPassword)
@@ -24,7 +33,17 @@ const SignUpComp = () => {
               password: '',
               confirmPassword: ''
             }}
-            validationSchema={signupSchema}>
+            validationSchema={signupSchema}
+            onSubmit={ async ({uname, email, password}) =>{
+              const res = await register(uname, email, password)
+              if(!res.success){
+                toast.error(res.error)
+              } else {
+                toast.success(`Welcome on board, ${res.user.displayName}`),
+                navigate(routes.dashboard)
+              }
+            }}
+            >
               {
                 props => (
                   <form action="" className='flex flex-col items-start gap-6' onSubmit={props.handleSubmit}>
@@ -86,10 +105,17 @@ const SignUpComp = () => {
                   onBlur={props.handleBlur}
                   onChange={props.handleChange} />
                   </div>
-                  { props.errors.confirmPassword && props.touched.uname && <div id="feedback" className="text-red-600 text-sm">{props.errors.uname}</div> }
+                  { props.errors.confirmPassword && props.touched.confirmPassword && <div id="feedback" className="text-red-600 text-sm">{props.errors.confirmPassword}</div> }
                 </fieldset>
                 </div>
-                <input type="submit" value="Sign Up" className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-md transition duration-200 ease-in-out transform self-center w-full mb-2" />
+                <button
+                type='submit'
+                className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-md transition duration-200 ease-in-out transform self-center w-full mb-2 disabled:cursor-not-allowed disabled:bg-gray-500 disabled:hover:bg-gray-400 flex items-center justify-center"
+                disabled={isLoading}>
+                  {
+                    isLoading ? <div className="loader"></div>: 'Sign up'
+                  }
+                </button>
             </form>
                 )
               }

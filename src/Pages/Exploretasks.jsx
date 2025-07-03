@@ -14,7 +14,7 @@ const Exploretasks = () => {
   })
   
   return (
-    <div className='mx-4'>
+    <div className='mx-4 h-full'>
       <Tasks />
     </div>
   )

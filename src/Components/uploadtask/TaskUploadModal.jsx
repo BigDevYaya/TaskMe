@@ -1,60 +1,15 @@
 import React, { useState } from 'react';
+import { Formik } from 'formik';
 import { X } from 'lucide-react';
+import { toast } from 'react-hot-toast'
+import { uploadTaskFunction } from '../../Utils/uploadTaskFunction'
+import { uploadSchema } from '../../Utils/schemas/schema';
+import { useAuthStore } from '../../Utils/useAuthStore';
 
  const TaskUploadModal = ({ isOpen, onClose }) => {
-  const [formData, setFormData] = useState({
-    taskName: '',
-    taskDescription: '',
-    taskInstructions: '',
-    numberOfPeople: '',
-    proofsNeeded: '',
-    complexity: 'Simple',
-    category: 'Social Media',
-    commissionPrice: '',
-    externalLink: '',
-    proofFormat: '',
-    deadline: '',
-    attachments: null,
-    visibility: 'Public',
-    tags: '',
-    termsAgreed: false
-  });
+  const { user } = useAuthStore();
 
-  const handleInputChange = (e) => {
-    const { name, value, type, checked, files } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : type === 'file' ? files : value
-    }));
-  };
-
-  const handleSubmit = () => {
-    console.log('Form submitted:', formData);
-    // Handle form submission here
-    onClose();
-  };
-
-  const handleCancel = () => {
-    setFormData({
-      taskName: '',
-      taskDescription: '',
-      taskInstructions: '',
-      numberOfPeople: '',
-      proofsNeeded: '',
-      complexity: 'Simple',
-      category: 'Social Media',
-      commissionPrice: '',
-      externalLink: '',
-      proofFormat: '',
-      deadline: '',
-      attachments: null,
-      visibility: 'Public',
-      tags: '',
-      termsAgreed: false
-    });
-    onClose();
-  };
-
+ 
   if (!isOpen) return null;
 
   return (
@@ -72,7 +27,59 @@ import { X } from 'lucide-react';
         </div>
 
         {/* Form */}
-        <div className="p-6 space-y-6">
+        <Formik
+        initialValues={{
+          taskName: '',
+          taskDescription: '',
+          taskInstructions: '',
+          numberOfPeople: '',
+          proofsNeeded: '',
+          complexity: 'Simple',
+          category: 'Social Media',
+          commissionPrice: '',
+          externalLink: '',
+          proofFormat: '',
+          deadline: '',
+          attachments: null,
+          visibility: 'Public',
+          tags: '',
+          termsAgreed: false
+        }}
+        validationSchema={uploadSchema}
+        onSubmit={ async (values, actions) => {
+          try {
+            const task = {
+              title: values.taskName,
+              description: values.taskDescription,
+              instructions: values.taskInstructions,
+              numberOfPeople: values.numberOfPeople,
+              proofsNeeded: values.proofsNeeded,
+              complexity: values.complexity,
+              category: values.category,
+              commissionPrice: values.commissionPrice,
+              externalLink: values.externalLink,
+              proofFormat: values.proofFormat,
+              deadline: values.deadline,
+              attachments: values.attachments,
+              visibility: values.visibility,
+              tags: values.tags,
+              termsAgreed: values.termsAgreed
+            }
+
+            await uploadTaskFunction(task, user.uid)
+            actions.resetForm()
+            onClose()
+            toast.success('Task Uploaded Successfully')
+          } catch(err) {
+            toast.error('Error Uploading Task : ' + err.message)
+            console.error(err)
+          } finally {
+            actions.setSubmitting(false)
+          }
+        } }>
+          {
+            props => (
+              <div className="p-6 space-y-6">
           {/* Row 1: Basic Task Info */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Task Name */}
@@ -83,11 +90,13 @@ import { X } from 'lucide-react';
               <input
                 type="text"
                 name="taskName"
-                value={formData.taskName}
-                onChange={handleInputChange}
+                value={props.values.taskName}
+                onChange={props.handleChange}
+                onBlur={props.handleBlur}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
                 placeholder="Enter task name"
               />
+              { props.touched.taskName && props.errors.taskName && <div className='text-red-500 text-sm'>{props.errors.taskName}</div> }
             </div>
 
             {/* Task Description */}
@@ -98,11 +107,12 @@ import { X } from 'lucide-react';
               <input
                 type="text"
                 name="taskDescription"
-                value={formData.taskDescription}
-                onChange={handleInputChange}
+                value={props.values.taskDescription}
+                onChange={props.handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
                 placeholder="Brief description of the task"
               />
+              { props.touched.taskDescription && props.errors.taskDescription && <div className='text-red-500 text-sm'>{props.errors.taskDescription}</div> }
             </div>
           </div>
 
@@ -113,12 +123,14 @@ import { X } from 'lucide-react';
             </label>
             <textarea
               name="taskInstructions"
-              value={formData.taskInstructions}
-              onChange={handleInputChange}
+              value={props.values.taskInstructions}
+              onChange={props.handleChange}
+              onBlur={props.handleBlur}
               rows={4}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
               placeholder="Detailed instructions for completing the task"
             />
+            { props.touched.taskInstructions && props.errors.taskInstructions && <div className='text-red-500 text-sm'>{props.errors.taskInstructions}</div> }
           </div>
 
           {/* Row 3: Numbers & Complexity */}
@@ -131,12 +143,14 @@ import { X } from 'lucide-react';
               <input
                 type="number"
                 name="numberOfPeople"
-                value={formData.numberOfPeople}
-                onChange={handleInputChange}
+                value={props.values.numberOfPeople}
+                onChange={props.handleChange}
+                onBlur={props.handleBlur}
                 min="1"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
                 placeholder="e.g., 5"
               />
+              { props.touched.numberOfPeople && props.errors.numberOfPeople && <div className='text-red-500 text-sm'>{props.errors.numberOfPeople}</div> }
             </div>
 
             {/* Complexity */}
@@ -146,14 +160,16 @@ import { X } from 'lucide-react';
               </label>
               <select
                 name="complexity"
-                value={formData.complexity}
-                onChange={handleInputChange}
+                value={props.values.complexity}
+                onChange={props.handleChange}
+                onBlur={props.handleBlur}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
               >
                 <option value="Simple">Simple</option>
                 <option value="Mid">Mid</option>
                 <option value="Hard">Hard</option>
               </select>
+              { props.touched.complexity && props.errors.complexity && <div className='text-red-500 text-sm'>{props.errors.complexity}</div> }
             </div>
 
             {/* Commission Price */}
@@ -164,13 +180,15 @@ import { X } from 'lucide-react';
               <input
                 type="number"
                 name="commissionPrice"
-                value={formData.commissionPrice}
-                onChange={handleInputChange}
+                value={props.values.commissionPrice}
+                onChange={props.handleChange}
+                onBlur={props.handleBlur}
                 min="0"
                 step="0.01"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
                 placeholder="1500.00"
               />
+              { props.touched.commissionPrice && props.errors.commissionPrice && <div className='text-red-500 text-sm'>{props.errors.commissionPrice}</div> }
             </div>
 
             {/* Deadline */}
@@ -181,10 +199,12 @@ import { X } from 'lucide-react';
               <input
                 type="date"
                 name="deadline"
-                value={formData.deadline}
-                onChange={handleInputChange}
+                value={props.values.deadline}
+                onChange={props.handleChange}
+                onBlur={props.handleBlur}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
               />
+              { props.touched.deadline && props.errors.deadline && <div className='text-red-500 text-sm'>{props.errors.deadline}</div> }
             </div>
           </div>
 
@@ -197,8 +217,9 @@ import { X } from 'lucide-react';
               </label>
               <select
                 name="category"
-                value={formData.category}
-                onChange={handleInputChange}
+                value={props.values.category}
+                onChange={props.handleChange}
+                onBlur={props.handleBlur}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
               >
                 <option value="Social Media">Social Media</option>
@@ -207,38 +228,9 @@ import { X } from 'lucide-react';
                 <option value="Creative Tasks">Creative Tasks</option>
                 <option value="Other">Other</option>
               </select>
+              { props.touched.category && props.errors.category && <div className='text-red-500 text-sm'>{props.errors.category}</div> }
             </div>
 
-            {/* Task Visibility */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Task Visibility
-              </label>
-              <div className="flex space-x-6 pt-2">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    name="visibility"
-                    value="Public"
-                    checked={formData.visibility === 'Public'}
-                    onChange={handleInputChange}
-                    className="text-blue-500 focus:ring-blue-300"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">Public</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    name="visibility"
-                    value="Private"
-                    checked={formData.visibility === 'Private'}
-                    onChange={handleInputChange}
-                    className="text-blue-500 focus:ring-blue-300"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">Private</span>
-                </label>
-              </div>
-            </div>
           </div>
 
           {/* Row 5: Proof Requirements */}
@@ -251,11 +243,13 @@ import { X } from 'lucide-react';
               <input
                 type="text"
                 name="proofsNeeded"
-                value={formData.proofsNeeded}
-                onChange={handleInputChange}
+                value={props.values.proofsNeeded}
+                onChange={props.handleChange}
+                onBlur={props.handleBlur}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
                 placeholder="What proof is required for task completion"
               />
+              { props.touched.proofsNeeded && props.errors.proofsNeeded && <div className='text-red-500 text-sm'>{props.errors.proofsNeeded}</div> }
             </div>
 
             {/* Proof Format Required */}
@@ -266,11 +260,13 @@ import { X } from 'lucide-react';
               <input
                 type="text"
                 name="proofFormat"
-                value={formData.proofFormat}
-                onChange={handleInputChange}
+                value={props.values.proofFormat}
+                onChange={props.handleChange}
+                onBlur={props.handleBlur}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
                 placeholder="e.g., Screenshot, Video, Link"
               />
+              { props.touched.proofFormat && props.errors.proofFormat && <div className='text-red-500 text-sm'>{props.errors.proofFormat}</div> }
             </div>
           </div>
 
@@ -284,11 +280,13 @@ import { X } from 'lucide-react';
               <input
                 type="url"
                 name="externalLink"
-                value={formData.externalLink}
-                onChange={handleInputChange}
+                value={props.values.externalLink}
+                onChange={props.handleChange}
+                onBlur={props.handleBlur}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
                 placeholder="https://example.com"
               />
+              { props.touched.externalLink && props.errors.externalLink && <div className='text-red-500 text-sm'>{props.errors.externalLink}</div> }
             </div>
 
             {/* Task Tags */}
@@ -299,11 +297,13 @@ import { X } from 'lucide-react';
               <input
                 type="text"
                 name="tags"
-                value={formData.tags}
-                onChange={handleInputChange}
+                value={props.values.tags}
+                onChange={props.handleChange}
+                onBlur={props.handleBlur}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300"
                 placeholder="tag1, tag2, tag3"
               />
+              { props.touched.tags && props.errors.tags && <div className='text-red-500 text-sm'>{props.errors.tags}</div> }
             </div>
           </div>
 
@@ -315,10 +315,16 @@ import { X } from 'lucide-react';
             <input
               type="file"
               name="attachments"
-              onChange={handleInputChange}
+              value={props.values.attachments}
+              onChange={(e) => {
+              const files = Array.from(e.currentTarget.files); // Convert FileList to Array
+              props.setFieldValue("attachments", files);
+              }}
+              onBlur={props.handleBlur}
               multiple
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 file:font-medium"
             />
+            { props.touched.attachments && props.errors.attachments && <div className='text-red-500 text-sm'>{props.errors.attachments}</div> }
           </div>
 
           {/* Terms Agreement */}
@@ -327,30 +333,36 @@ import { X } from 'lucide-react';
               <input
                 type="checkbox"
                 name="termsAgreed"
-                checked={formData.termsAgreed}
-                onChange={handleInputChange}
+                checked={props.values.termsAgreed}
+                onChange={props.handleChange}
+                onBlur={props.handleBlur}
                 className="mt-1 text-blue-500 focus:ring-blue-300 rounded"
               />
               <span className="text-sm text-gray-700">
                 I agree not to request illegal or unethical tasks.
               </span>
             </label>
+            { props.touched.termsAgreed && props.errors.termsAgreed && <div className='text-red-500 text-sm'>{props.errors.termsAgreed}</div> }
           </div>
 
           {/* Action Buttons */}
           <div className="flex space-x-4 pt-6 border-t border-gray-200">
             <button
-              onClick={handleSubmit}
+              type='submit'
+              onClick={props.handleSubmit}
               className="flex-1 bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors font-medium">
               Submit Task
-            </button>
+            </button>x
             <button
-              onClick={handleCancel}
+              onClick={props.handleReset}
               className="flex-1 bg-gray-200 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-300 transition-colors font-medium">
               Cancel
             </button>
           </div>
         </div>
+            )
+          }
+        </Formik>
       </div>
     </div>
   );

@@ -1,11 +1,16 @@
 import { Formik } from 'formik';
 import { Eye, EyeClosed } from 'lucide-react';
 import { useState } from 'react'
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { loginSchema } from '../Utils/schemas/schema';
+import { useAuthStore } from '../Utils/useAuthStore';
+import toast from 'react-hot-toast';
+import { routes } from '../Utils/routes';
 
 const LoginComp = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate()
+  const { login, isLoading } = useAuthStore();
 
   function handleIconClick() {
     setShowPassword(!showPassword)
@@ -22,7 +27,15 @@ const LoginComp = () => {
               password: ''
             }}
             validationSchema={loginSchema}
-            onSubmit={() => alert('Yaya')}>
+            onSubmit={ async ({email, password}) => {
+              const res = await login(email, password)
+              if(!res.success){
+                toast.error(res.error)
+              } else {
+                toast.success(`Welcome back ${res.user.displayName}`),
+                navigate(routes.dashboard)
+              }
+            }}>
             {
               props => (
                 <form action="" className='flex flex-col items-start gap-6' onSubmit={props.handleSubmit}>
@@ -58,12 +71,19 @@ const LoginComp = () => {
                   </div>
                   { props.errors.password && props.touched.password && <div id='feedback' className='text-red-500 text-sm'>{props.errors.password}</div> }
                 </fieldset>
-                <input type="submit" value="Login" className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-md transition duration-200 ease-in-out transform self-center w-full mb-2" />
+                <button
+                type='submit'
+                disabled={isLoading}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-md transition duration-200 ease-in-out transform self-center w-full mb-2 disabled:cursor-not-allowed disabled:bg-gray-500 disabled:hover:bg-gray-400 flex items-center justify-center"
+                >
+                  {
+                    isLoading ? <div className='loader'></div> : 'Login'
+                  }
+                </button>
             </form>
               )
             }
             </Formik>
-
             <Link>Forgot Password?</Link>
             <div className='h-0.5 bg-gray-400 my-3 w-full'></div>
             <div className='flex items-center gap-2'>

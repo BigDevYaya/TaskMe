@@ -4,7 +4,7 @@ import Chats from '../Components/Chats'
 
 const Messages = () => {
   return (
-    <div className='flex h-full w-full'>
+    <div className='lg:flex h-full lg:w-full overflow-hidden relative'>
       <ChatList />
       <Chats />
     </div>

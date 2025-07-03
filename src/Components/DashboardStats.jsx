@@ -6,32 +6,34 @@ import {
   Wallet,
 } from 'lucide-react'
 
+const user = JSON.parse(localStorage.getItem('user'));
+
 const stats = [
   {
     title: 'Tasks Completed',
-    value: 12,
+    value: user?.completedTasks?.length || 0,
     icon: <CheckCircle size={28} className="text-green-600" />,
     bg: 'bg-green-50',
   },
   {
     title: 'Tasks Uploaded',
-    value: 5,
+    value: user?.uploadedTasks?.length || 0,
     icon: <UploadCloud size={28} className="text-blue-600" />,
     bg: 'bg-blue-50',
   },
   {
     title: 'Earnings (₦)',
-    value: 1550,
+    value: user?.totalEarnings || 0,
     icon: <Wallet size={28} className="text-yellow-600" />,
     bg: 'bg-yellow-50',
   },
   {
     title: 'Unread Messages',
-    value: 3,
+    value: user?.unreadMessages || 0, // Add this to your user object if needed
     icon: <Mail size={28} className="text-purple-600" />,
     bg: 'bg-purple-50',
   },
-]
+];
 
 const DashboardStats = () => {
   return (

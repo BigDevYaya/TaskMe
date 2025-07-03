@@ -30,12 +30,12 @@ const SideMenu = () => {
                   to={item.to}
                   onClick={() => setSelectedID(item.id)}
                   className={`flex items-center gap-3 cursor-pointer transition px-4 py-2 rounded-md 
-                    ${isSelected ? `border-l-4 rounded-r-full bg-blue-400 border-l-blue-200 ${selectedID === 5 && 'bg-red-500 border-l-red-800'}` : ''}`}
+                    ${isSelected ? `border-l-4 rounded-r-full bg-blue-400 border-l-blue-200 ${selectedID === 6 && 'bg-red-500 border-l-red-800'}` : ''}`}
                 >
-                  <span className={isSelected ? `text-black ${selectedID === 5 && 'text-white'}` : 'text-[#62618F]'}>
+                  <span className={isSelected ? `text-black ${selectedID === 6 && 'text-white'}` : 'text-[#62618F]'}>
                     {item.icon}
                   </span>
-                  <span className={`font-medium ${isSelected ? `text-black ${selectedID === 5 && 'text-white'}` : 'text-[#62618F]'}`}>{item.text}</span>
+                  <span className={`font-medium ${isSelected ? `text-black ${selectedID === 6 && 'text-white'}` : 'text-[#62618F]'}`}>{item.text}</span>
                 </Link>
               );
             })}

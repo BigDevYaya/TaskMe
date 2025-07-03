@@ -39,6 +39,17 @@ button{
   background-size: cover;
 }
 
+.slide {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 1s;
+}
+
 fieldset{
   display: flex;
   flex-direction: column;
@@ -77,4 +88,93 @@ fieldset{
     .animate-fade-in {
       animation: fade-in 0.2s ease-out;
     }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(-200%);
+      }
+      to {
+        transform: translateX(0);
+      }
+    }
+
+    .animate-slideIn{
+      animation: slideIn 300ms ease-in-out forwards;
+    }
+    @keyframes slideOut {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(-200%);
+      }
+    }
+
+    .animate-slideOut{
+      animation: slideOut 300ms ease-in-out forwards;
+    }
+
+    @keyframes filterSlideDown{
+      0% {
+        opacity: 0;
+        height: 0;
+      }
+      25% {
+        opacity: 0.2;
+        height: 50px;
+      }
+      50% {
+        opacity: 0.5;
+        height: 100px;
+      }
+      100% {
+        opacity: 1;
+        height: fit-content;
+      }
+
+    }
+    .animate-filter {
+      animation: filterSlideDown 300ms ease forwards;
+      transition: all;
+    }
+    @keyframes filterSlideUp{
+      0% {
+        opacity: 1;
+        height: fit-content;
+      }
+      25% {
+        opacity: 0.5;
+        height: 100px;
+      }
+      50% {
+        opacity: 0.2;
+        height: 50px;
+      }
+      100% {
+        opacity: 0;
+        height: 0;
+      }
+
+    }
+    .animate-filterUp {
+      animation: filterSlideDown 300ms ease forwards;
+      transition: all;
+    }
+
 }
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 50px;
+  --b: 8px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #514b82;
+  -webkit-mask:
+    repeating-conic-gradient(#0000 0deg,#000 1deg 70deg,#0000 71deg 90deg),
+    radial-gradient(farthest-side,#0000 calc(100% - var(--b) - 1px),#000 calc(100% - var(--b)));
+  -webkit-mask-composite: destination-in;
+          mask-composite: intersect;
+  animation: l5 1s infinite;
+}
+@keyframes l5 {to{transform: rotate(.5turn)}}

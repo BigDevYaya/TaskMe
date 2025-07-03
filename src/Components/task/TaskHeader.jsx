@@ -10,7 +10,7 @@ const  TaskHeader = ({ title, category, uploader, status, reward, date }) => {
         <div className="mt-2 flex flex-wrap gap-4 text-sm text-gray-500">
           <span className="flex items-center gap-1"><Tag size={16}/> {category}</span>
           <span className="flex items-center gap-1"><User size={16}/> {uploader}</span>
-          <span className="flex items-center gap-1"><Circle size={16}/> {format(date, 'PPP')}</span>
+          <span className="flex items-center gap-1"><Circle size={16}/> {new Date(date).toLocaleString()}</span>
         </div>
       </div>
       <div className="mt-4 md:mt-0 flex items-center gap-4">

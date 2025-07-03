@@ -1,20 +1,53 @@
-import React, { useState } from 'react'
-import { Bell, Menu } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { Bell, Menu, Search } from 'lucide-react'
 import Notification from '../Components/Notification'
 import ProfileDropDown from './ProfileDropDown'
+import MobileNav from './MobileNav'
+import { useAuthStore } from '../Utils/useAuthStore'
 
-const Header = ({title, explore}) => {
+const Header = ({title, explore, className}) => {
 
   const [showNotif, setShowNotif] = useState(false) 
   const [showLogout, setShowLogout] = useState(false)
-  // const generateColor = () => {
-  //   const red 
-  // }
+
+  const [showNav, setShowNav] = useState(false)
+  const [color, setColor] = useState('')
+  const { user } = useAuthStore();
+
+  const formattedName = user.displayName.split(' ')
+  const [fname, lname] = formattedName
+  const format = fname[0]+lname[0]
+
+  const generateColor = () => {
+    const red = Math.floor((Math.random() * 100) + 1)
+    const green = Math.floor((Math.random() * 100) + 1)
+    const blue = Math.floor((Math.random() * 100) + 1)
+
+    setColor(`rgb(${red}, ${green}, ${blue})`)
+  }
+
+
+  useEffect(() => generateColor(), [])
+
 
   return (
-        <div className='flex flex-col items-start justify-between h-fit z-50 p-4 bg-white transition-all duration-500 overflow-hidden w-full'>
+        <div className='flex flex-col items-start justify-between h-fit z-50 p-4 bg-white transition-all duration-500 w-full'>
             <div className='flex justify-between w-full items-center'>
-              <p className='text-black font-bold space-x-1 text-2xl'>{title}</p>
+              <div className='flex items-center gap-4'>
+                <Menu className='lg:hidden' onClick={() => setShowNav(prev => !prev)}/>
+                <div className='flex gap-4 lg:flex-row flex-1 w-full flex-col justify-start'>
+                  <p className='text-black font-bold space-x-1 text-2xl'>{title}</p> 
+                  <div className={`${className ? className : 'hidden'}  items-center border border-blue-100 px-4 py-2 rounded-2xl md:w-[500px]`}>
+                    <input
+                      type="text"
+                      className="focus:outline-none flex-1 text-sm md:text-base "
+                      placeholder="Search tasks..."
+                    />
+                    <Search className="text-blue-400" />
+                  </div>
+                </div >
+              </div>
+              
             <div className='flex items-center p-3'>
                 <div className='flex p-4 w-fit relative'>
                 <button onClick={() => setShowNotif(prev => !prev)} className='focus:outline-none'>
@@ -22,20 +55,26 @@ const Header = ({title, explore}) => {
                 </button>
                 <span className='bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1 absolute top-0'>3</span>
                 </div>
-                <div className='w-14 h-14 bg-amber-300 rounded-full flex items-center justify-center text-white font-bold text-lg cursor-pointer' onClick={() => setShowLogout(!showLogout)}>
-                  IY
+                
+                <div className={`w-14 h-14 bg-[rgb(100, 100, 100)] rounded-full flex items-center justify-center text-white font-bold text-lg cursor-pointer`}
+                style={{backgroundColor: color}}
+                 onClick={() => setShowLogout(!showLogout)}>
+                  { format }
                 </div>
-                <Menu className='bg-blue-400 p-2 rounded-full lg: hidden w-10 h-10' />
             </div>
             </div>
-            <div className={`w-full overflow-hidden transition-all duration-1000 ease-linear ${explore ? 'max-h-[500px]' : 'max-h-0'}`}>
+            <div className={`w-full transition-all duration-1000 ease-linear ${explore ? 'max-h-[500px]' : 'max-h-0'}`}>
               {
                 explore
               }
 
+          </div>
+          
+          {
+            showNav && <MobileNav setShowNav={setShowNav} isOpen={showNav} />
+          }
           { showNotif && <Notification setShowNotif={setShowNotif} />}
           { showLogout && <ProfileDropDown setShowLogout={setShowLogout} /> }
-      </div>
         </div>
   )
 }

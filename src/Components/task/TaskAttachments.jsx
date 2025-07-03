@@ -2,7 +2,7 @@ import React from 'react'
 import { Paperclip } from 'lucide-react'
 
 const TaskAttachments = ({ attachments = [] }) => {
-  if (!attachments.length) return null
+  if (!attachments) return null
   return (
     <div className="bg-white shadow rounded-xl p-6">
       <h2 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
