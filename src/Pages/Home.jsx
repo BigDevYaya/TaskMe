@@ -21,11 +21,11 @@ const Home = () => {
   const isNotificationsPage = location.pathname.includes('notification')
 
   function getHeader() {
-  if (isUploadTasksPage) return <Header title="My Tasks" setShowNav={setShowNav} explore={<Explore className={'flex'}/>} className={'flex'}  />;
+  if (isUploadTasksPage) return <Header title="My Tasks" setShowNav={setShowNav} explore={<Explore className={'flex'}/>} className={'md:flex'}  />;
   if (isHelpCenterPage) return null;
   if (isSettingsPage) return null;
   if (isMessagesPage) return null;
-  if (isExploreTasksPage) return <Header title="Explore Tasks" setShowNav={setShowNav} explore={<Explore />} className={'flex'} />;
+  if (isExploreTasksPage) return <Header title="Explore Tasks" setShowNav={setShowNav} explore={<Explore />} className={'md:flex'} />;
   if (isTaskDetailPage) return null;
   if (isNotificationsPage) return null;
   return <Header title="Dashboard" setShowNav={setShowNav}/>;
@@ -47,7 +47,9 @@ const Home = () => {
         </main>
 
       {
-            showNav && <MobileNav setShowNav={setShowNav} isOpen={showNav} />
+            showNav && <MobileNav setShowNav={setShowNav} isOpen={showNav} selectedIndex={
+              isUploadTasksPage ? 3 : isExploreTasksPage ? 2 : isMessagesPage ? 4 : isNotificationsPage ? 5 : isSettingsPage ? 6 : 1
+            } />
       }
     </div>
   )

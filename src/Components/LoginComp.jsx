@@ -33,6 +33,7 @@ const LoginComp = () => {
                 toast.error(res.error)
               } else {
                 toast.success(`Welcome back ${res.user.displayName}`),
+                
                 navigate(routes.dashboard)
               }
             }}>

@@ -4,7 +4,11 @@ import {
     signInWithEmailAndPassword, 
     signOut, 
     onAuthStateChanged,
-    updateProfile
+    updateProfile,
+    EmailAuthProvider,
+    reauthenticateWithCredential,
+    updatePassword,
+    deleteUser
  } from "firebase/auth";
 import {
     setDoc,
@@ -119,5 +123,91 @@ export const useAuthStore = create((set) => ({
         } catch (error) {
             console.error("Logout error : ", error.message )
         }
-    } 
+    },
+
+    changePassword : async (currentPassword, newPassword) => {
+        set({ isLoading: true });
+        const user = auth.currentUser;  
+        if (!user) {
+            return { success: false, error: "No user is currently logged in." };
+        }
+        try {
+            // Reauthenticate the user
+            const credential = EmailAuthProvider.credential(user.email, currentPassword);
+            await reauthenticateWithCredential(user, credential)
+
+
+            // Update the password
+            await updatePassword(user, newPassword);
+            return { success: true, message: "Password changed successfully." };
+        } catch (error) {
+            return { success: false, message: error.message };
+        } finally {
+            set({ isLoading: false });
+        }
+    },
+
+    changeEmail : async (currentemail, newEmail, password) => {
+        set({ isLoading: true });
+        const user = auth.currentUser;
+
+        if(!user) {
+            return { success: false, error: "No user is currently logged in." };
+        }
+
+        try{
+            const credentail = EmailAuthProvider.credential(currentemail, password);
+            await reauthenticateWithCredential(user, credentail);
+
+            await updateProfile(user, {
+                email: newEmail
+            });
+
+            return {
+                success: true, 
+                message: "Email changed successfully."
+            }
+        } catch(error){
+            return {
+                success: false,
+                message: error.message
+            }
+        } finally {
+            set({ isLoading: false });
+        }
+    },
+
+    deleteAccount: async (password) => {
+        set({isLoading : true});
+        const user = auth.currentUser;
+
+        if (!user) {
+            return { success: false, error: "No user is currently logged in." };
+        }
+
+        try{
+            const credential = EmailAuthProvider.credential(user.email, password)
+            await reauthenticateWithCredential(user, credential)
+
+            await deleteUser(user);
+            
+            set({
+                user: null
+            })
+            return {
+                success : true,
+                message: "Account deleted successfully."
+            }
+        } catch(error){
+            return {
+                success: false,
+                message: error.message
+            }
+        } finally {
+            set({ 
+                isLoading: false 
+            });
+
+        }
+    }
 }))

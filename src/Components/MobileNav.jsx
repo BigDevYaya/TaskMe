@@ -2,17 +2,8 @@ import { items } from "../Utils/navs"
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const MobileNav = ({setShowNav, isOpen}) => {
-    const [selectedID, setSelectedID] = useState(() => {
-        const saved = sessionStorage.getItem('selectedID')
+const MobileNav = ({setShowNav, isOpen, selectedIndex}) => {
     
-        return saved ? JSON.parse(saved) : 1
-      });
-    
-      useEffect(()=> {
-        sessionStorage.setItem('selectedID', selectedID)
-      },[selectedID])
-
 
   return (
     <div className="bg-white">
@@ -24,22 +15,21 @@ const MobileNav = ({setShowNav, isOpen}) => {
     onClick={()=> setShowNav(false)}>
                   <ul className='flex flex-col gap-16 px-10 py-10 pt-16'>
             {items.map((item) => {
-              const isSelected = selectedID === item.id;
+              const isSelected = selectedIndex === item.id;
               return (
                 <Link
                   key={item.id}
                   to={item.to}
                   onClick={() => {
-                    setSelectedID(item.id)
                     setShowNav(false)
                   }}
                   className={`flex items-center gap-3 cursor-pointer transition px-4 py-2 rounded-md 
-                    ${isSelected ? `border-l-4 rounded-r-full bg-blue-400 border-l-blue-200 ${selectedID === 6 && 'bg-red-500 border-l-red-800'}` : ''}`}
+                    ${isSelected ? `border-l-4 rounded-r-full bg-blue-400 border-l-blue-200 ${selectedIndex === 6 && 'bg-red-500 border-l-red-800'}` : ''}`}
                 >
-                  <span className={isSelected ? `text-black ${selectedID === 6 && 'text-white'}` : 'text-[#62618F]'}>
+                  <span className={isSelected ? `text-black ${selectedIndex === 6 && 'text-white'}` : 'text-[#62618F]'}>
                     {item.icon}
                   </span>
-                  <span className={`font-medium ${isSelected ? `text-black ${selectedID === 6 && 'text-white'}` : 'text-[#62618F]'}`}>{item.text}</span>
+                  <span className={`font-medium ${isSelected ? `text-black ${selectedIndex === 6 && 'text-white'}` : 'text-[#62618F]'}`}>{item.text}</span>
                 </Link>
               );
             })}

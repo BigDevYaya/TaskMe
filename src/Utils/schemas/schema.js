@@ -85,3 +85,23 @@ export const uploadSchema = Yup.object().shape({
   tags: Yup.string().default(''),
   termsAgreed: Yup.boolean().oneOf([true], 'You must agree to the terms'),
 });
+
+
+export const changePasswordSchema = Yup.object().shape({
+  password: Yup.string()
+    .min(6, 'Password must be at least 6 characters')
+    .required('Current Password is required'),
+  newPassword: Yup.string().required('New Password is required')
+})
+
+export const changeEmailSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email address').required('Email is required'),
+  password: Yup.string()
+    .min(6, 'Password must be at least 6 characters')
+    .required('Password is required'),
+  newEmail: Yup.string().email('Invalid email address').required('New Email is required')
+})
+
+export const deleteAccountSchema = Yup.object().shape({
+  password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters')
+})

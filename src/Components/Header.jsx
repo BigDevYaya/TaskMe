@@ -12,7 +12,6 @@ const Header = ({ title, explore, className, setShowNav }) => {
 
   const location = useLocation()
   const isDashboardPage = location.pathname === '/'
-  console.log(isDashboardPage)
   const { user } = useAuthStore()
   const formattedName = user.displayName.split(' ')
   const [fname, lname] = formattedName
@@ -36,7 +35,7 @@ const Header = ({ title, explore, className, setShowNav }) => {
           <p className="text-black font-bold text-xl md:text-2xl truncate">{title}</p>
         <div
           className={`${
-             'hidden md:flex'
+           className ? className :  'hidden '
           } flex items-center border border-blue-100 px-4 py-2 rounded-2xl w-full md:w-[400px] max-w-full`}
         >
           <input

@@ -46,7 +46,17 @@ useEffect(() => {
             to={`/${task.id}`}>
   {/* Top Section */}
   <div className="flex justify-between items-center text-sm flex-wrap text-gray-500">
-    <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-xs font-medium">{task.category}</span>
+    <span className={` ${
+          task.category === 'App/Website Engagement' 
+            ? 'bg-blue-500 text-white' 
+            : task.category === 'Creative Tasks' 
+            ? 'bg-blue-400 text-white' 
+            : task.category === 'Social Media' 
+            ? 'bg-blue-300 text-black' 
+            : task.category === 'Surveys & Feedback' 
+            ? 'bg-blue-200 text-black' 
+            : 'bg-blue-100 text-black'
+        } px-2 py-0.5 rounded-full text-xs font-medium`}>{task.category}</span>
     <p>
       Uploaded by <span className="text-gray-800 font-semibold">{task.uploaderEmail}</span>
     </p>
