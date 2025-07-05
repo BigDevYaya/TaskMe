@@ -3,12 +3,16 @@ import { Bell, Menu, Search } from 'lucide-react'
 import Notification from '../Components/Notification'
 import ProfileDropDown from './ProfileDropDown'
 import { useAuthStore } from '../Utils/useAuthStore'
+import { useLocation } from 'react-router'
 
 const Header = ({ title, explore, className, setShowNav }) => {
   const [showNotif, setShowNotif] = useState(false)
   const [showLogout, setShowLogout] = useState(false)
   const [color, setColor] = useState('')
 
+  const location = useLocation()
+  const isDashboardPage = location.pathname === '/'
+  console.log(isDashboardPage)
   const { user } = useAuthStore()
   const formattedName = user.displayName.split(' ')
   const [fname, lname] = formattedName
@@ -70,7 +74,7 @@ const Header = ({ title, explore, className, setShowNav }) => {
       {/* Explore section (optional) */}
       <div
           className={`${
-             'md:hidden flex'
+            isDashboardPage ? 'hidden' : 'md:hidden flex'
           } flex items-center border border-blue-100 px-4 py-2 rounded-2xl w-full md:w-[400px] max-w-full mt-1.5`}
         >
           <input
