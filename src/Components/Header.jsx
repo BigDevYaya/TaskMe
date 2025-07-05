@@ -31,7 +31,7 @@ const Header = ({title, explore, className, setShowNav}) => {
 
 
   return (
-        <div className='flex flex-col items-start justify-between h-fit z-50 p-4 bg-white transition-all duration-500 w-full'>
+        <div className='flex flex-col items-start justify-between h-fit z-50 p-4 bg-white transition-all duration-500 w-svh'>
             <div className='flex justify-between w-full items-center'>
               <div className='flex items-center gap-4'>
                 <Menu className='lg:hidden' onClick={() => setShowNav(prev => !prev)}/>
