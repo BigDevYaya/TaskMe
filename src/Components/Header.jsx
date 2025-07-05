@@ -5,18 +5,18 @@ import ProfileDropDown from './ProfileDropDown'
 import MobileNav from './MobileNav'
 import { useAuthStore } from '../Utils/useAuthStore'
 
-const Header = ({title, explore, className}) => {
+const Header = ({title, explore, className, setShowNav}) => {
 
   const [showNotif, setShowNotif] = useState(false) 
   const [showLogout, setShowLogout] = useState(false)
 
-  const [showNav, setShowNav] = useState(false)
+  
   const [color, setColor] = useState('')
   const { user } = useAuthStore();
 
   const formattedName = user.displayName.split(' ')
   const [fname, lname] = formattedName
-  const format = fname[0]+lname[0]
+  const format = fname[0].toUpperCase()+lname[0].toUpperCase()
 
   const generateColor = () => {
     const red = Math.floor((Math.random() * 100) + 1)
@@ -70,9 +70,7 @@ const Header = ({title, explore, className}) => {
 
           </div>
           
-          {
-            showNav && <MobileNav setShowNav={setShowNav} isOpen={showNav} />
-          }
+          
           { showNotif && <Notification setShowNotif={setShowNotif} />}
           { showLogout && <ProfileDropDown setShowLogout={setShowLogout} /> }
         </div>

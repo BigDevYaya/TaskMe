@@ -8,6 +8,7 @@ import { useAuthStore } from '../../Utils/useAuthStore';
 
  const TaskUploadModal = ({ isOpen, onClose }) => {
   const { user } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(false);
 
  
   if (!isOpen) return null;
@@ -48,6 +49,7 @@ import { useAuthStore } from '../../Utils/useAuthStore';
         validationSchema={uploadSchema}
         onSubmit={ async (values, actions) => {
           try {
+            setIsLoading(true)
             const task = {
               title: values.taskName,
               description: values.taskDescription,
@@ -66,7 +68,7 @@ import { useAuthStore } from '../../Utils/useAuthStore';
               termsAgreed: values.termsAgreed
             }
 
-            await uploadTaskFunction(task, user.uid)
+            await uploadTaskFunction(task, user.uid, user.email)
             actions.resetForm()
             onClose()
             toast.success('Task Uploaded Successfully')
@@ -74,6 +76,7 @@ import { useAuthStore } from '../../Utils/useAuthStore';
             toast.error('Error Uploading Task : ' + err.message)
             console.error(err)
           } finally {
+            setIsLoading(false)
             actions.setSubmitting(false)
           }
         } }>
@@ -347,17 +350,23 @@ import { useAuthStore } from '../../Utils/useAuthStore';
 
           {/* Action Buttons */}
           <div className="flex space-x-4 pt-6 border-t border-gray-200">
-            <button
+            {
+              isLoading ? <div className='loader flex items-center justify-center'></div> : (
+                <>
+                <button
               type='submit'
               onClick={props.handleSubmit}
               className="flex-1 bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors font-medium">
               Submit Task
-            </button>x
+            </button>
             <button
               onClick={props.handleReset}
               className="flex-1 bg-gray-200 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-300 transition-colors font-medium">
               Cancel
             </button>
+            </>
+              ) 
+            }
           </div>
         </div>
             )

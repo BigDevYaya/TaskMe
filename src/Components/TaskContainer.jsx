@@ -4,7 +4,7 @@ import { Calendar1Icon } from 'lucide-react'
 import { Link } from 'react-router'
 import { useAuthStore } from '../Utils/useAuthStore'
 import { db } from '../Utils/firebase'
-import { getDocs, collection, getDoc, doc } from 'firebase/firestore'
+import { onSnapshot, collection, getDoc, doc } from 'firebase/firestore'
 
 const TaskContainer = () => {
   const [isLoading, setIsLoading]= useState(false)
@@ -13,54 +13,31 @@ const TaskContainer = () => {
 
 
 useEffect(() => {
-  const fetchTasks = async () => {
+  const unsubscribe = onSnapshot(collection(db, 'tasks'), (snapshot) => {
     setIsLoading(true)
     try {
-      const snapshot = await getDocs(collection(db, 'tasks'))
-
-      // Fetch only public tasks
       const taskList = snapshot.docs
         .map(doc => ({ id: doc.id, ...doc.data() }))
-        .filter(task => task.visibility !== 'Private' && task.uploadedBy !== user?.uid)
+        .filter(task => task.visibility !== 'Private' && task.uploadedBy !== user?.uid && !task.completedBy?.includes(user?.uid))
 
-      // Get all unique user IDs
-      const uploaderIds = [...new Set(taskList.map(task => task.uploadedBy))]
-
-      // Fetch all user documents (in parallel)
-      const userDocs = await Promise.all(
-        uploaderIds.map(uid => getDoc(doc(db, 'users', uid)))
-      )
-
-      // Create a map from uid to email
-      const userEmailMap = {}
-      userDocs.forEach(userDoc => {
-        if (userDoc.exists()) {
-          const userData = userDoc.data()
-          userEmailMap[userDoc.id] = userData.email
-        }
-      })
-
-      // Attach email to each task
-      const enrichedTasks = taskList.map(task => ({
-        ...task,
-        uploaderEmail: userEmailMap[task.uploadedBy] || "Unknown User"
-      }))
-
-      setTasks(enrichedTasks)
+      setTasks(taskList)
     } catch (error) {
-      console.error('Failed to fetch tasks or users:', error)
+      console.error('Error fetching tasks:', error)
     } finally {
       setIsLoading(false)
     }
-  }
+  })
 
-  fetchTasks()
+  return () => unsubscribe()
 }, [])
+
 
   return (
     <>
     { isLoading ? (
-      <div className='loader flex items-center justify-center'></div>
+      <div className='flex items-center justify-center'>
+        <div className='loader'></div>
+      </div>
     ) : tasks.length === 0 ? (
       <div className='flex items-center justify-center'>Sorry, no Tasks available</div>
     ) :

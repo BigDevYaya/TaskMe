@@ -12,10 +12,12 @@ import {
     getDoc
 } from 'firebase/firestore'
 import { auth, db } from "./firebase";
+import { logLoginActivity } from "./logLoginActivity";
 
 export const useAuthStore = create((set) => ({
     user: null,
     isLoading: false,
+    setUser: (user) => set({ user }),
 
     initAuth: () => {
         onAuthStateChanged(auth, (user) => {
@@ -68,39 +70,43 @@ export const useAuthStore = create((set) => ({
             }
         },
     
-    login : async (email, password) => {
-        set({ isLoading : true })
-        try{
-            const res = await signInWithEmailAndPassword(auth, email, password)
-            const user = res.user
+    login: async (email, password) => {
+        set({ isLoading: true });
 
+        try {
+            const res = await signInWithEmailAndPassword(auth, email, password);
+            const user = res.user;
+
+            await logLoginActivity(user.uid)
+
+            // 🗃️ Fetch user profile data
             const userDoc = await getDoc(doc(db, "users", user.uid));
             let userData = {};
-            if(userDoc.exists()) {
-                userData = userDoc.data();
+            if (userDoc.exists()) {
+            userData = userDoc.data();
             }
+
+            const mergedUser = {
+            ...user,
+            ...userData
+            };
+
             set({
-                user : {
-                    ...user,
-                    ...userData
-                },
-                isLoading : false
-            })
+            user: mergedUser,
+            isLoading: false
+            });
 
             return {
-                success : true,
-                user : {
-                    ...user,
-                    ...userData
-                }
-            }
-        } catch(error){
+            success: true,
+            user: mergedUser
+            };
+        } catch (error) {
             return {
-                success : false,
-                error: error.message
-            }
-        } finally{
-            set({isLoading : false})
+            success: false,
+            error: error.message
+            };
+        } finally {
+            set({ isLoading: false });
         }
     },
 

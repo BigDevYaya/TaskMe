@@ -54,7 +54,7 @@ export default function TaskDetailPage() {
         deadline={taskDetails.deadline}
       />
       <TaskInstructions 
-      instructions={taskDetails.description} 
+      instructions={taskDetails.instructions} 
       />
       <TaskAttachments 
       attachments={taskDetails.attachments} 

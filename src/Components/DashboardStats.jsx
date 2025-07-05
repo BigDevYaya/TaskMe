@@ -5,16 +5,24 @@ import {
   Mail,
   Wallet,
 } from 'lucide-react'
+import { useAuthStore } from '../Utils/useAuthStore'
 
-const user = JSON.parse(localStorage.getItem('user'));
 
-const stats = [
+
+
+
+
+
+const DashboardStats = () => {
+  const { user } = useAuthStore();
+
+  const stats = [
   {
     title: 'Tasks Completed',
-    value: user?.completedTasks?.length || 0,
+    value: [... new Set(user?.completedTasks)]?.length || 0,
     icon: <CheckCircle size={28} className="text-green-600" />,
     bg: 'bg-green-50',
-  },
+  },  
   {
     title: 'Tasks Uploaded',
     value: user?.uploadedTasks?.length || 0,
@@ -33,9 +41,7 @@ const stats = [
     icon: <Mail size={28} className="text-purple-600" />,
     bg: 'bg-purple-50',
   },
-];
-
-const DashboardStats = () => {
+ ];
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
       {stats.map((stat, idx) => (

@@ -15,6 +15,13 @@
   border-radius: 50%;
 }
 
+.react-calendar__tile.highlighted-day {
+  background: #c6f6d5 !important;
+  color: #22543d !important;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
 /* Highlighted Days (e.g. completed task days) */
 .highlighted-day {
   background-color: #bbf7d0 !important;

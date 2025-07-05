@@ -3,16 +3,8 @@ import { items } from '../Utils/navs'
 import { Link } from 'react-router'
 import React, {useEffect, useState} from 'react'
 
-const SideMenu = () => {
-  const [selectedID, setSelectedID] = useState(() => {
-    const saved = sessionStorage.getItem('selectedID')
-
-    return saved ? JSON.parse(saved) : 1
-  });
-
-  useEffect(()=> {
-    sessionStorage.setItem('selectedID', selectedID)
-  },[selectedID])
+const SideMenu = ({selectedIndex = 1}) => {
+  
   return (
     <div className='lg:flex flex-col px-6 py-8 gap-6 w-[300px] sticky top-0 bg-white h-svh hidden'>
       
@@ -23,19 +15,18 @@ const SideMenu = () => {
         <nav>
           <ul className='flex flex-col gap-5'>
             {items.map((item) => {
-              const isSelected = selectedID === item.id;
+              const isSelected = selectedIndex === item.id;
               return (
                 <Link
                   key={item.id}
                   to={item.to}
-                  onClick={() => setSelectedID(item.id)}
                   className={`flex items-center gap-3 cursor-pointer transition px-4 py-2 rounded-md 
-                    ${isSelected ? `border-l-4 rounded-r-full bg-blue-400 border-l-blue-200 ${selectedID === 6 && 'bg-red-500 border-l-red-800'}` : ''}`}
+                    ${isSelected ? `border-l-4 rounded-r-full bg-blue-400 border-l-blue-200 ${selectedIndex === 6 && 'bg-red-500 border-l-red-800'}` : ''}`}
                 >
-                  <span className={isSelected ? `text-black ${selectedID === 6 && 'text-white'}` : 'text-[#62618F]'}>
+                  <span className={isSelected ? `text-black ${selectedIndex === 6 && 'text-white'}` : 'text-[#62618F]'}>
                     {item.icon}
                   </span>
-                  <span className={`font-medium ${isSelected ? `text-black ${selectedID === 6 && 'text-white'}` : 'text-[#62618F]'}`}>{item.text}</span>
+                  <span className={`font-medium ${isSelected ? `text-black ${selectedIndex === 6 && 'text-white'}` : 'text-[#62618F]'}`}>{item.text}</span>
                 </Link>
               );
             })}

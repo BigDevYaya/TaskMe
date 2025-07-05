@@ -14,7 +14,7 @@ const Exploretasks = () => {
   })
   
   return (
-    <div className='mx-4 h-full'>
+    <div className='p-6 min-h-screen bg-gray-50'>
       <Tasks />
     </div>
   )

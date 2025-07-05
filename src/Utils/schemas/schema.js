@@ -46,7 +46,7 @@ export const uploadSchema = Yup.object().shape({
     .oneOf(['Simple', 'Mid', 'Hard'], 'Select a valid complexity')
     .required('Complexity is required'),
   category: Yup.string()
-    .oneOf(['Social Media', 'Surveys and Feedback', 'App/Website Engagement', 'Creative Tasks', 'Other'])
+    .oneOf(['Social Media', 'Surveys & Feedback', 'App/Website Engagement', 'Creative Tasks', 'Other'])
     .required('Category is required'),
   commissionPrice: Yup.number()
     .required('Please input the price for completion of the task')
