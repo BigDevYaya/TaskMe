@@ -14,7 +14,6 @@ const MessageIcons = () => {
         <div className='flex items-end gap-2 '>
           <PlusIcon />
           <Send />
-          <CameraIcon />
           <div className='relative'> 
             <SmilePlus onClick={toggleEmojis} />
             <div className="absolute bottom-full right-0 shadow-lg">
