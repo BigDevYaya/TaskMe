@@ -23,7 +23,7 @@ const ChangePasswordModal = ({setShowPasswordModal}) => {
     className='fixed inset-0 flex items-center justify-center shadow-lg bg-black/50'
     onClick={() => setShowPasswordModal(false)}>
         <div 
-        className='bg-white p-6 rounded-lg shadow-lg w-full max-w-md'
+        className='bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-4'
         onClick={(e) => e.stopPropagation()}>
             <h2 className='text-xl font-semibold mb-4'>Change Your Password</h2>
             <Formik

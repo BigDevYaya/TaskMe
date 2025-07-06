@@ -17,7 +17,7 @@ const LoginComp = () => {
   }
   return (
     <div className='flex items-center justify-center h-svh'>
-        <div className='bg-white/80 backdrop-blur-3xl shadow-2xl rounded-md p-7'>
+        <div className='bg-white/80 backdrop-blur-3xl shadow-2xl rounded-md p-7 mx-4' >
             <div className='mb-5 border-b pb-2'>
               <h1 className='text-2xl font-semibold'>Log in</h1>
             </div>

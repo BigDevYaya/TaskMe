@@ -2,7 +2,7 @@ import { SearchIcon } from 'lucide-react'
 import messages from '../assets/Data/messages.json'
 import React from 'react'
 
-const ChatList = () => {
+const ChatList = ({onChatSelect}) => {
   let [fname, lname] = ['John', 'Doe']
   return (
     <div className='flex-1 mb-2 bg-[#fafafa] rounded-lg overflow-y-auto h-full'>
@@ -20,7 +20,7 @@ const ChatList = () => {
           const initials = `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}`;
 
             return (
-            <div className='flex items-center justify-between p-4 hover:bg-gray-100 rounded-lg cursor-pointer transition-all border-b border-gray-200' key={i}>
+            <div className='flex items-center justify-between p-4 hover:bg-gray-100 rounded-lg cursor-pointer transition-all border-b border-gray-200'onClick={onChatSelect} key={i}>
   {/* Left: Avatar + Message Info */}
   <div className='flex items-center gap-4'>
     {/* Avatar */}

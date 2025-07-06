@@ -22,7 +22,7 @@ const DeleteAccountModal = ({ setShowDeleteAccountModal }) => {
     className='fixed inset-0 flex items-center justify-center bg-black/50'
     onClick={() => setShowDeleteAccountModal(false)}>
         <div 
-        className='bg-white p-6 rounded-lg shadow-lg w-full max-w-md'
+        className='bg-white p-6 rounded-lg shadow-lg mx-4 w-full max-w-md'
         onClick={(e) => e.stopPropagation()}>
             <h2 className='text-xl font-semibold mb-4'>Delete Your Account</h2>
             <p className='text-gray-700 mb-4'>Are you sure you want to delete your account? This action cannot be undone.</p>

@@ -22,7 +22,7 @@ const ChangeEmailModal = ({setShowEmailModal}) => {
     className='fixed inset-0 flex items-center justify-center bg-black/50'
     onClick={() => setShowEmailModal(false)}>
         <div 
-        className='bg-white p-6 rounded-lg shadow-lg w-full max-w-md'
+        className='bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-4'
         onClick={(e) => e.stopPropagation()}>
             <h2 className='text-xl font-semibold mb-4'>Change Your Email</h2>
             <Formik

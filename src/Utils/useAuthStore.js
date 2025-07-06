@@ -8,12 +8,17 @@ import {
     EmailAuthProvider,
     reauthenticateWithCredential,
     updatePassword,
-    deleteUser
+    deleteUser,
  } from "firebase/auth";
 import {
     setDoc,
     doc,
-    getDoc
+    getDoc,
+    getDocs,
+    deleteDoc,
+    query,
+    where,
+    collection
 } from 'firebase/firestore'
 import { auth, db } from "./firebase";
 import { logLoginActivity } from "./logLoginActivity";
@@ -190,6 +195,13 @@ export const useAuthStore = create((set) => ({
             await reauthenticateWithCredential(user, credential)
 
             await deleteUser(user);
+
+            await deleteDoc(doc(db, "users", user.uid))
+            const q = query(collection(db, "tasks"), where("uploaderEmail", "==", user.email))
+            const tasksSnapshot = await getDocs(q);
+            for (const taskDoc of tasksSnapshot.docs) {
+                await deleteDoc(doc(db, "tasks", taskDoc.id));
+            }
             
             set({
                 user: null

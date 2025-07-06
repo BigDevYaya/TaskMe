@@ -21,11 +21,11 @@ const Home = () => {
   const isNotificationsPage = location.pathname.includes('notification')
 
   function getHeader() {
-  if (isUploadTasksPage) return <Header title="My Tasks" setShowNav={setShowNav} explore={<Explore className={'flex'}/>} className={'md:flex'}  />;
+  if (isUploadTasksPage) return <Header title="My Tasks" setShowNav={setShowNav} explore={<Explore className={'flex'}/>} className={'md:flex hidden'}  />;
   if (isHelpCenterPage) return null;
   if (isSettingsPage) return null;
   if (isMessagesPage) return null;
-  if (isExploreTasksPage) return <Header title="Explore Tasks" setShowNav={setShowNav} explore={<Explore />} className={'md:flex'} />;
+  if (isExploreTasksPage) return <Header title="Explore Tasks" setShowNav={setShowNav} explore={<Explore />} className={'md:flex hidden'} />;
   if (isTaskDetailPage) return null;
   if (isNotificationsPage) return null;
   return <Header title="Dashboard" setShowNav={setShowNav}/>;

@@ -22,7 +22,7 @@ const SignUpComp = () => {
     }
   return (
     <div className='flex items-center justify-center h-svh'>
-        <div className='bg-white/80 backdrop-blur-3xl shadow-2xl rounded-md p-7'>
+        <div className='bg-white/80 backdrop-blur-3xl shadow-2xl rounded-md mx-4 p-7'>
             <div className='mb-5 border-b pb-2'>
               <h1 className='text-2xl font-semibold'>Sign Up</h1>
             </div>
@@ -71,7 +71,7 @@ const SignUpComp = () => {
                     onChange={props.handleChange} />
                     { props.errors.email && props.touched.email && <div id="feedback" className="text-red-600 text-sm">{props.errors.email}</div> }
                 </fieldset>
-                <div className="flex gap-4 items-center">
+                <div className="flex flex-col md:flex-row  gap-4 items-center">
                     <fieldset className='w-full flex flex-col items-start gap-2'>
                   <label htmlFor="password" className='text-lg'>Enter Password</label>
                   <div className='border border-blue-400 px-5 py-3 flex items-center gap-4 rounded-xl w-full'>
