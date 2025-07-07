@@ -50,7 +50,8 @@ export default function TaskDetailPage() {
         date={taskDetails.createdAt?.toDate()}
       />
       <TaskMeta
-        performedCount={taskDetails.numberOfPeople}
+        requiredCount={taskDetails.numberOfPeople}
+        performedCount={taskDetails.completedBy.length}
         deadline={taskDetails.deadline}
       />
       <TaskInstructions 

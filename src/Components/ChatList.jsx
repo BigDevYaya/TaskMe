@@ -1,14 +1,19 @@
-import { SearchIcon } from 'lucide-react'
+import { Menu, SearchIcon } from 'lucide-react'
 import messages from '../assets/Data/messages.json'
 import React from 'react'
 
-const ChatList = ({onChatSelect}) => {
-  let [fname, lname] = ['John', 'Doe']
+const ChatList = ({onChatSelect, setShowNav}) => {
+  
   return (
     <div className='flex-1 mb-2 bg-[#fafafa] rounded-lg overflow-y-auto h-full'>
-      <div className='flex items-center gap-2 border border-blue-400 rounded-2xl bg-white py-4 px-7 m-4'>
+      <div className= 'flex items-center p-4 border-b border-gray-200'>
+        <Menu 
+        className='cursor-pointer lg:hidden'
+        onClick={() => setShowNav(prev => !prev)} />
+        <div className='flex flex-1 items-center gap-2 border border-blue-400 rounded-2xl bg-white py-4 px-7 m-4'>
         <SearchIcon className='text-blue-400' />
         <input type="text" className='flex-1 w-full focus:outline-none'/>
+      </div>
       </div>
       <div className='flex flex-col h-[calc(100vh-100px)] overflow-y-auto'>
         {

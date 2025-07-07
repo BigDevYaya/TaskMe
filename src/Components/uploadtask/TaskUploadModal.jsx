@@ -5,6 +5,8 @@ import { toast } from 'react-hot-toast'
 import { uploadTaskFunction } from '../../Utils/uploadTaskFunction'
 import { uploadSchema } from '../../Utils/schemas/schema';
 import { useAuthStore } from '../../Utils/useAuthStore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { storage } from '../../Utils/firebase';
 
  const TaskUploadModal = ({ isOpen, onClose }) => {
   const { user } = useAuthStore();
@@ -50,6 +52,15 @@ import { useAuthStore } from '../../Utils/useAuthStore';
         onSubmit={ async (values, actions) => {
           try {
             setIsLoading(true)
+            let attachmentsUrls = [];
+            if(values.attachments && values.attachments.length > 0) {
+              for(const file of values.attachments) {
+                const storageRef = ref(storage, `tasks/${user.uid}/${Date.now()}_${file.name}`)
+                await uploadBytes(storageRef, file);
+                const url = await getDownloadURL(storageRef);
+                attachmentsUrls.push(url);
+            }
+          }
             const task = {
               title: values.taskName,
               description: values.taskDescription,
@@ -62,7 +73,7 @@ import { useAuthStore } from '../../Utils/useAuthStore';
               externalLink: values.externalLink,
               proofFormat: values.proofFormat,
               deadline: values.deadline,
-              attachments: values.attachments,
+              attachments: attachmentsUrls,
               visibility: values.visibility,
               tags: values.tags,
               termsAgreed: values.termsAgreed
@@ -82,7 +93,9 @@ import { useAuthStore } from '../../Utils/useAuthStore';
         } }>
           {
             props => (
-              <div className="p-6 space-y-6">
+              <form 
+              className="p-6 space-y-6"
+              onSubmit={props.handleSubmit}>
           {/* Row 1: Basic Task Info */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Task Name */}
@@ -318,9 +331,9 @@ import { useAuthStore } from '../../Utils/useAuthStore';
             <input
               type="file"
               name="attachments"
-              value={props.values.attachments}
+              
               onChange={(e) => {
-              const files = Array.from(e.currentTarget.files); // Convert FileList to Array
+              const files = Array.from(e.currentTarget.files); 
               props.setFieldValue("attachments", files);
               }}
               onBlur={props.handleBlur}
@@ -355,12 +368,14 @@ import { useAuthStore } from '../../Utils/useAuthStore';
                 <>
                 <button
               type='submit'
-              onClick={props.handleSubmit}
+              disabled={props.isSubmitting || isLoading}
               className="flex-1 bg-blue-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors font-medium">
-              Submit Task
+              {
+                isLoading ? 'Uploading task' : 'Upload Task'
+              }
             </button>
             <button
-              onClick={props.handleReset}
+              onClick={onClose}
               className="flex-1 bg-gray-200 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-300 transition-colors font-medium">
               Cancel
             </button>
@@ -368,7 +383,7 @@ import { useAuthStore } from '../../Utils/useAuthStore';
               ) 
             }
           </div>
-        </div>
+        </form>
             )
           }
         </Formik>

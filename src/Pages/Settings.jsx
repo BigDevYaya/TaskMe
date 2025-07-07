@@ -23,6 +23,9 @@ const Settings = () => {
       <Menu className='lg:hidden' onClick={() => setShowNav(prev => !prev)} />
       <h1 className="text-4xl font-extrabold text-gray-900 mb-8">Settings</h1>
     </div>
+    {
+      showNav && <MobileNav setshowNav={setShowNav} isOpen={showNav} selectedIndex={6} />
+    }
 
     <ProAcc 
     setShowPasswordModal={setShowPasswordModal}
@@ -34,9 +37,7 @@ const Settings = () => {
     setShowLoginActivity={setShowLoginActivity}
     setShowDeleteAccountModal={setShowDeleteAccountModal}
     />
-    {
-      showNav && <MobileNav setshowNav={setShowNav} isOpen={showNav} />
-    }
+    
     {
       showPasswordModal && <ChangePasswordModal setShowPasswordModal={setShowPasswordModal} />
     }
