@@ -59,27 +59,6 @@ export const uploadSchema = Yup.object().shape({
   deadline: Yup.date()
     .optional(),
 
-  attachments: Yup.array()
-  .nullable()
-  .test(
-    'fileType',
-    'Only image files are allowed',
-    (value) => {
-      if (!value) return true;
-      return value.every(file =>
-        ['image/jpeg', 'image/png', 'image/webp'].includes(file.type)
-      );
-    }
-  )
-  .test(
-    'fileSize',
-    'Each image must be less than 2MB',
-    (value) => {
-      if (!value) return true;
-      return value.every(file => file.size <= 2 * 1024 * 1024);
-    }
-  ),
-
   // Optional/default fields
   visibility: Yup.string().default('Public'),
   tags: Yup.string().default(''),
@@ -104,4 +83,10 @@ export const changeEmailSchema = Yup.object().shape({
 
 export const deleteAccountSchema = Yup.object().shape({
   password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters')
+})
+
+export const submitTaskSchema = Yup.object().shape({
+  proof : Yup.string()
+  .required('Proof is required')
+  .min(5, 'Proof must be at least 5 characters')
 })

@@ -54,6 +54,7 @@ export const useMessageStore = create((set, get) => ({
     // Add the message
     await addDoc(messagesRef, {
       senderId,
+      receiverId,
       text,
       type,
       createdAt: serverTimestamp(),

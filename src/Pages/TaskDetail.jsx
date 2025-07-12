@@ -51,14 +51,11 @@ export default function TaskDetailPage() {
       />
       <TaskMeta
         requiredCount={taskDetails.numberOfPeople}
-        performedCount={taskDetails.completedBy.length}
+        performedCount={taskDetails?.completedBy?.length}
         deadline={taskDetails.deadline}
       />
       <TaskInstructions 
       instructions={taskDetails.instructions} 
-      />
-      <TaskAttachments 
-      attachments={taskDetails.attachments} 
       />
       <SubmissionForm 
       taskId={taskId} 

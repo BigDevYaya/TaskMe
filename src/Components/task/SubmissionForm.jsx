@@ -4,9 +4,13 @@ import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../../Utils/firebase'
 import { set } from 'date-fns'
 import toast from 'react-hot-toast'
+import { Formik } from 'formik'
+import { submitTaskSchema } from '../../Utils/schemas/schema'
+import { useMessageStore } from '../../Utils/useMessageStore'
 
 const SubmissionForm = ({ taskId }) => {
   const [file, setFile] = useState(null)
+  const { sendMessage } = useMessageStore()
   const [submitting, setSubmitting] = useState(false)
   const { user, setUser } = useAuthStore()
 
@@ -20,9 +24,8 @@ const SubmissionForm = ({ taskId }) => {
   }
   
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (proof) => {
     setSubmitting(true)
-    e.preventDefault()
     const isTaskCompleted = await checkIfTaskCompleted()
     if (!isTaskCompleted) {
     try{
@@ -31,6 +34,12 @@ const SubmissionForm = ({ taskId }) => {
         completedTasks: arrayUnion(taskId),
         totalEarnings: user.totalEarnings + taskDoc.data().commissionPrice
       } )
+      await sendMessage({
+        senderId: user.uid,
+        receiverId: taskDoc.data().uploadedBy,
+        text : proof,
+        type: 'text'
+      })
 
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       if (userDoc.exists()) {
@@ -43,7 +52,7 @@ const SubmissionForm = ({ taskId }) => {
       })
       toast.success('Task completed successfully!')
     } catch(err){
-      toast.error('An Error Ocurred: ', err.message)
+      console.error('An Error Ocurred: ' + err.message)
     } finally {
       setSubmitting(false)
     }
@@ -54,24 +63,47 @@ const SubmissionForm = ({ taskId }) => {
 }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white shadow rounded-xl p-6 space-y-4">
-      <h2 className="text-lg font-semibold text-gray-800">Submit Proof of Completion</h2>
-      <div className='flex flex-col gap-4'>
-        <input
-        type="file"
-        onChange={(e) => setFile(e.target.files[0])}
-        className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200"
-        />
-        <textarea name="text" id="text" className='border w-full rounded-lg text-black focus:outline-none p-0.5' rows={3}></textarea>
-      </div>
-      <button
-        type="submit"
-        disabled={submitting}
-        className="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
-      >
-        {submitting ? 'Submitting...' : 'Submit'}
-      </button>
-    </form>
+    <Formik
+    initialValues={{
+      proof: ''
+    }}
+    validationSchema={submitTaskSchema}
+    onSubmit={async (values, actions) => {
+      await handleSubmit(values.proof)
+      actions.resetForm()
+      actions.setSubmitting(false)
+    }}
+    >
+      {
+        props => (
+          <form onSubmit={props.handleSubmit} className="bg-white shadow rounded-xl p-6 space-y-4">
+            <h2 className="text-lg font-semibold text-gray-800">Submit Proof of Completion</h2>
+            <div className='flex flex-col gap-4'>
+              <textarea 
+              name="proof" 
+              id="proof"
+              value={props.values.proof} 
+              onChange={props.handleChange}
+              onBlur={props.handleBlur}
+              className='border w-full rounded-lg text-black focus:outline-none p-0.5' 
+              rows={3}></textarea>
+              {
+                props.touched.proof && props.errors.proof && (
+                  <p className='text-red-500 text-sm'>{props.errors.proof}</p>
+                )
+              }
+            </div>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+            >
+              {submitting ? 'Submitting...' : 'Submit'}
+            </button>
+          </form>
+        )
+      }
+    </Formik>
   )
 }
 

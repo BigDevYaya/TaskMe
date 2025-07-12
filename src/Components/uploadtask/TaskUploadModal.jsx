@@ -43,7 +43,6 @@ import { storage } from '../../Utils/firebase';
           externalLink: '',
           proofFormat: '',
           deadline: '',
-          attachments: null,
           visibility: 'Public',
           tags: '',
           termsAgreed: false
@@ -52,15 +51,6 @@ import { storage } from '../../Utils/firebase';
         onSubmit={ async (values, actions) => {
           try {
             setIsLoading(true)
-            let attachmentsUrls = [];
-            if(values.attachments && values.attachments.length > 0) {
-              for(const file of values.attachments) {
-                const storageRef = ref(storage, `tasks/${user.uid}/${Date.now()}_${file.name}`)
-                await uploadBytes(storageRef, file);
-                const url = await getDownloadURL(storageRef);
-                attachmentsUrls.push(url);
-            }
-          }
             const task = {
               title: values.taskName,
               description: values.taskDescription,
@@ -73,7 +63,6 @@ import { storage } from '../../Utils/firebase';
               externalLink: values.externalLink,
               proofFormat: values.proofFormat,
               deadline: values.deadline,
-              attachments: attachmentsUrls,
               visibility: values.visibility,
               tags: values.tags,
               termsAgreed: values.termsAgreed
@@ -324,24 +313,7 @@ import { storage } from '../../Utils/firebase';
           </div>
 
           {/* Row 7: File Upload (Full Width) */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Upload Attachments
-            </label>
-            <input
-              type="file"
-              name="attachments"
-              
-              onChange={(e) => {
-              const files = Array.from(e.currentTarget.files); 
-              props.setFieldValue("attachments", files);
-              }}
-              onBlur={props.handleBlur}
-              multiple
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 file:font-medium"
-            />
-            { props.touched.attachments && props.errors.attachments && <div className='text-red-500 text-sm'>{props.errors.attachments}</div> }
-          </div>
+          
 
           {/* Terms Agreement */}
           <div>
@@ -364,7 +336,9 @@ import { storage } from '../../Utils/firebase';
           {/* Action Buttons */}
           <div className="flex space-x-4 pt-6 border-t border-gray-200">
             {
-              isLoading ? <div className='loader flex items-center justify-center'></div> : (
+              isLoading ? <div className='flex w-full items-center justify-center'>
+                <div className='loader'></div>
+              </div> : (
                 <>
                 <button
               type='submit'
