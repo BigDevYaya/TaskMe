@@ -29,7 +29,7 @@ const Messages = ({ receiverId }) => {
                     : 'bg-gray-200 text-gray-900 rounded-bl-none'
                 }`}
               >
-                <p>{msg.text}</p>
+                <p className='break-words'>{msg.text}</p>
                 <span className="block text-[10px] text-gray-300 mt-1 text-right">
                   {msg.createdAt?.toDate().toLocaleTimeString() ?? 'Just now'}
                 </span>
