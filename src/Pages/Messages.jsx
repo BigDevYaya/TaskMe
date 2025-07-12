@@ -9,7 +9,7 @@ const Messages = () => {
   const [showNav, setShowNav] = useState(false)
   const [receiverId, setReceiverId] = useState(null)
   return (
-    <div className='flex h-screen w-full overflow-hidden relative'>
+    <div className='flex h-svh w-full overflow-hidden relative'>
       {
         showNav && <MobileNav setShowNav={setShowNav} isOpen={showNav} selectedIndex={4} />
       }

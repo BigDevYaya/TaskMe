@@ -2,7 +2,7 @@ import { Menu, SearchIcon } from 'lucide-react'
 import messages from '../assets/Data/messages.json'
 import React, { useEffect, useState } from 'react'
 import { useAuthStore } from '../Utils/useAuthStore'
-import { collection, doc, getDoc, onSnapshot, orderBy, query, where } from 'firebase/firestore'
+import { collection, doc, getDoc, onSnapshot, orderBy, query, updateDoc, where } from 'firebase/firestore'
 import { db } from '../Utils/firebase'
 
 const ChatList = ({onChatSelect, setShowNav, setReceiverId}) => {
@@ -40,6 +40,15 @@ const ChatList = ({onChatSelect, setShowNav, setReceiverId}) => {
   return () => unSub();
 }, [user?.uid]);
 
+  const handleChatSelect = async (message) => {
+    setReceiverId(message.receiver.uid);
+    onChatSelect();
+
+    const convoRef = doc(db, 'messages', message.id)
+    await updateDoc(convoRef, {
+      [`unseenCount.${user.uid}`]: 0
+    })
+  }
   
   
   return (
@@ -67,8 +76,7 @@ const ChatList = ({onChatSelect, setShowNav, setReceiverId}) => {
 
             return (
             <div className='flex items-center justify-between p-4 hover:bg-gray-100 rounded-lg cursor-pointer transition-all border-b border-gray-200'onClick={() => {
-              setReceiverId(message.receiver.uid);
-              onChatSelect();
+              handleChatSelect(message)
             }} key={i}>
   {/* Left: Avatar + Message Info */}
   <div className='flex items-center gap-4'>

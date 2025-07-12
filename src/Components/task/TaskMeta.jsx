@@ -5,7 +5,7 @@ import { format } from 'date-fns'
 const TaskMeta = ({ performedCount, deadline }) => {
   return (
     <div className="bg-white shadow rounded-xl p-4 flex gap-6 text-sm text-gray-600">
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col lg:flex-row items-center gap-2">
         <Users size={16} className="text-gray-500" />
         <span>{performedCount || 0} users completed</span> of <span>{performedCount || 0} users needed</span>
       </div>

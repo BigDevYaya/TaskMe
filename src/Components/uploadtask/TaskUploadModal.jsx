@@ -334,7 +334,7 @@ import { storage } from '../../Utils/firebase';
           </div>
 
           {/* Action Buttons */}
-          <div className="flex space-x-4 pt-6 border-t border-gray-200">
+          <div className="flex flex-col gap-4 lg:flex-col space-x-4 pt-6 border-t border-gray-200">
             {
               isLoading ? <div className='flex w-full items-center justify-center'>
                 <div className='loader'></div>
