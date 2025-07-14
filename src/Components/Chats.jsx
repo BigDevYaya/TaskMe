@@ -56,11 +56,7 @@ const Chats = ({onBack, receiverId, showChats}) => {
       <p className='text-sm font-semibold text-gray-800'>{receiverName}</p>
     </div>
         </div>
-        <div className='flex items-end gap-4 bg-blue-400 px-4 py-2 rounded-3xl'>
-          <Phone className='cursor-pointer' />
-          <div className='w-0.5 h-7 bg-black'></div>
-          <Video className='cursor-pointer' />
-        </div>
+        
         </div>
       </div>
 

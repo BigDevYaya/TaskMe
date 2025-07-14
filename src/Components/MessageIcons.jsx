@@ -41,7 +41,8 @@ const MessageIcons = ({ receiverId }) => {
     }
   
   return (
-          <div className="relative flex items-center justify-end gap-2 mx-2">
+    <>
+          <div className="relative flex items-center justify-end gap-2 mx-2 mb-4">
         <input 
         type="text" 
         value={messageText}
@@ -50,14 +51,20 @@ const MessageIcons = ({ receiverId }) => {
         <div className='flex items-end gap-2 '>
           <Send onClick={()=> handleMessageSend(messageText)} />
           <div className='relative'> 
-            <SmilePlus onClick={()=>toggleEmojis()} />
-            <div className="absolute bottom-full right-0 shadow-lg">
+            <SmilePlus onClick={()=>toggleEmojis()} />       
+             <div className='hidden lg:block lg:absolute lg:bottom-full lg:right-0 shadow-lg'>
               {showEmojis && <EmojiPicker onEmojiClick={handleEmojiClick} />}
             </div>
           </div>
         </div>
-        
+            
       </div>
+      <div className="w-full flex flex-col"> 
+  <div className="w-full flex lg:hidden items-center justify-center"> 
+    {showEmojis && <EmojiPicker onEmojiClick={handleEmojiClick} />}
+  </div>
+</div>
+    </>
   )
 }
 

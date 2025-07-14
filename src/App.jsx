@@ -13,6 +13,7 @@ import Login from './Pages/Login'
 import SignUp from "./Pages/SignUp"
 import Notifications from "./Pages/Notifications"
 import { Toaster } from "react-hot-toast"
+import UserTaskDetail from "./Pages/UserTaskDetail"
 
 function App() {
   const user = false
@@ -30,6 +31,7 @@ function App() {
         <Route path={routes.uploaded} element={<UploadedTasks />} />
         <Route path={routes.taskdetail} element={<TaskDetailPage />} />
         <Route path={routes.notifications} element={<Notifications />} />
+        <Route path={routes.userTaskdetail} element={<UserTaskDetail />} />
       </Route>
         </Route> 
   

@@ -4,6 +4,7 @@ import { mockTasks } from '../assets/Data/mockTasks'
 import { useAuthStore } from '../Utils/useAuthStore'
 import { collection, query, where, onSnapshot } from 'firebase/firestore'
 import { db } from '../Utils/firebase'
+import { Link } from 'react-router'
 
 
 
@@ -51,7 +52,9 @@ useEffect(() => {
       ) : tasks.length === 0 ? (
         <p className="text-gray-500 text-center mt-20">You haven’t uploaded any tasks yet.</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <Link 
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        to={`/uploadedtasks/${tasks[0].id}`}>
           {tasks.map(task => (
             <div key={task.id} className="bg-white p-4 rounded-xl shadow hover:shadow-md transition">
               <div className="flex justify-between text-sm text-gray-500 mb-2">
@@ -69,7 +72,7 @@ useEffect(() => {
               </div>
             </div>
           ))}
-        </div>
+        </Link>
       )}
     </div>
   )

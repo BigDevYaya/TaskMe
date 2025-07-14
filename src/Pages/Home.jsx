@@ -9,6 +9,7 @@ import MobileNav from '../Components/MobileNav'
 import Explore from '../Components/Explore'
 import { getDoc, doc } from 'firebase/firestore'
 import { db } from '../Utils/firebase'
+import { is } from 'date-fns/locale'
 
 const Home = () => {
   const location = useLocation();
@@ -21,23 +22,24 @@ const Home = () => {
   const isExploreTasksPage = location.pathname.includes('exploretasks');
   const isUploadTasksPage = location.pathname.includes('uploadedtasks');
   const isHelpCenterPage = location.pathname.includes('helpcenter');
-  const isTaskDetailPage = location.pathname.includes(taskId)
+  const isTaskDetailPage = location.pathname.includes(`/exploretasks/${taskId}`)
   const isNotificationsPage = location.pathname.includes('notification')
+  const isUserTaskDetailPage = location.pathname.includes(`/uploadedtasks/${taskId}`)
 
   useEffect(() => {
-    if(isTaskDetailPage && taskId) {
+    if((isTaskDetailPage && taskId) || isUserTaskDetailPage) {
       const fetchTaskName = async () => {
         try {
           const taskDoc = await getDoc(doc(db, 'tasks', taskId));
           if (taskDoc.exists()) {
             const taskData = taskDoc.data();
             setTaskName(taskData.title);
-            document.title = `Task - ${taskData.title}`;
+            document.title = `${taskData.title}`;
           } else {
             console.error('Task not found');
           }
         } catch (error) {
-          console.error('Error fetching task name:', error);
+          console.error('Error fetching task name:', error.message);
         }
       }
       fetchTaskName();

@@ -23,14 +23,14 @@ const Messages = ({ receiverId }) => {
               }`}
             >
               <div
-                className={`max-w-xs px-4 py-2 rounded-lg text-sm ${
+                className={`max-w-xs  text-sm `}
+              >
+                <p className={`break-words px-4 py-2 rounded-lg ${
                   msg.senderId === user.uid
                     ? 'bg-blue-500 text-white rounded-br-none'
                     : 'bg-gray-200 text-gray-900 rounded-bl-none'
-                }`}
-              >
-                <p className='break-words'>{msg.text}</p>
-                <span className="block text-[10px] text-gray-300 mt-1 text-right">
+                } `}>{msg.text}</p>
+                <span className="block text-[10px] text-gray-800 mt-1 text-right">
                   {msg.createdAt?.toDate().toLocaleTimeString() ?? 'Just now'}
                 </span>
               </div>

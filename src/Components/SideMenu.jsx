@@ -9,7 +9,7 @@ const SideMenu = ({selectedIndex = 1}) => {
     <div className='lg:flex flex-col px-6 py-8 gap-6 w-[300px] sticky top-0 bg-white h-svh hidden'>
       
       {/* Title */}
-      <img src="./TaskMe.png" className='rounded-lg w-32 h-fit self-center'  alt="Logo" />
+      <img src="./TaskMe.png" className='rounded-lg w-32 h-fit self-center'  alt="TaskMe" />
 
       <div className='flex-1 overflow-y-auto pr-1'>
         <nav>

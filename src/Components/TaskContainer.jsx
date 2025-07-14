@@ -43,7 +43,7 @@ useEffect(() => {
     ) :
         tasks?.map((task, i) => (
             <Link className="bg-white p-4 rounded-lg shadow-md w-full max-w-md space-y-4 hover:shadow-lg transition-shadow duration-200 cursor-pointer" key={i}
-            to={`/${task.id}`}>
+            to={`/exploretasks/${task.id}`}>
   {/* Top Section */}
   <div className="flex justify-between items-center text-sm flex-wrap text-gray-500">
     <span className={` ${
