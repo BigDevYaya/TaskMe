@@ -84,7 +84,7 @@ const Header = ({ title, explore, className, setShowNav }) => {
           <Search className="text-blue-400" />
         </div>
       <div
-        className={`w-full transition-all duration-700 ease-linear overflow-hidden ${
+        className={`w-full transition-all duration-700 ease-linear ${
           explore ? 'max-h-[500px] mt-4' : 'max-h-0'
         }`}
       >

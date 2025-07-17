@@ -19,12 +19,12 @@ const Home = () => {
 
   const isSettingsPage = location.pathname.includes('settings');
   const isMessagesPage = location.pathname.includes('messages');
-  const isExploreTasksPage = location.pathname.includes('exploretasks');
-  const isUploadTasksPage = location.pathname.includes('uploadedtasks');
+  const isExploreTasksPage = location.pathname === '/exploretasks';
+  const isUploadTasksPage = location.pathname === '/uploadedtasks';
   const isHelpCenterPage = location.pathname.includes('helpcenter');
   const isTaskDetailPage = location.pathname.includes(`/exploretasks/${taskId}`)
   const isNotificationsPage = location.pathname.includes('notification')
-  const isUserTaskDetailPage = location.pathname.includes(`/uploadedtasks/${taskId}`)
+  const isUserTaskDetailPage = location.pathname.includes(`/uploadedtasks/${taskId}`);
 
   useEffect(() => {
     if((isTaskDetailPage && taskId) || isUserTaskDetailPage) {
@@ -44,20 +44,39 @@ const Home = () => {
       }
       fetchTaskName();
     }
-  }, [isTaskDetailPage, taskId])
+  }, [isUserTaskDetailPage, isTaskDetailPage, taskId])
 
   function getHeader() {
-  if (isUploadTasksPage) return <Header title="My Tasks" setShowNav={setShowNav} explore={<Explore className={'flex'}/>} className={'md:flex hidden'}  />;
-  if (isHelpCenterPage) return null;
-  if (isSettingsPage) return null;
-  if (isMessagesPage) return null;
-  if (isExploreTasksPage) return <Header title="Explore Tasks" setShowNav={setShowNav} explore={<Explore />} className={'md:flex hidden'} />;
-  if (isTaskDetailPage) {
-    return <Header title={taskName} setShowNav={setShowNav} />;
+  if (isUploadTasksPage) {
+    document.title = "Uploaded Tasks"
+    return <Header title="My Tasks" setShowNav={setShowNav} explore={<Explore className={'flex'}/>} className={'md:flex hidden'}  />
   };
-  if (isNotificationsPage) return null;
-  return <Header title="Dashboard" setShowNav={setShowNav}/>;
+  if (isHelpCenterPage) return null;
+  if (isSettingsPage) {
+    document.title = "Settings"
+    return null
+  };
+  if (isMessagesPage) {
+    document.title = "Messages"
+    return null
+  };
+  if (isExploreTasksPage) {
+    document.title = "Explore tasks"
+    return <Header title="Explore Tasks" setShowNav={setShowNav} explore={<Explore />} className={'md:flex hidden'} />
+  };
+  if (isTaskDetailPage || isUserTaskDetailPage) {
+    return <Header title={taskName} setShowNav={setShowNav} className={'hidden'} />
 }
+  if (isNotificationsPage) {
+    document.title = "Notifications"
+    return null
+  };
+  
+    document.title ="Dashboard"
+    return <Header title="Dashboard" setShowNav={setShowNav}/>
+  ;
+}
+
 
 
   return (
@@ -76,7 +95,7 @@ const Home = () => {
 
       {
             showNav && <MobileNav setShowNav={setShowNav} isOpen={showNav} selectedIndex={
-              isUploadTasksPage ? 3 : (isExploreTasksPage || isTaskDetailPage) ? 2 : isMessagesPage ? 4 : isNotificationsPage ? 5 : isSettingsPage ? 6  : 1
+              (isUploadTasksPage || isUserTaskDetailPage) ? 3 : (isExploreTasksPage || isTaskDetailPage) ? 2 : isMessagesPage ? 4 : isNotificationsPage ? 5 : isSettingsPage ? 6  : 1
             } />
       }
     </div>

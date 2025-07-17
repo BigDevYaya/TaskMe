@@ -129,14 +129,17 @@ fieldset{
       25% {
         opacity: 0.2;
         height: 50px;
+        transition: all 300ms ease-in-out;
       }
       50% {
-        opacity: 0.5;
+        opacity: 0.3;
         height: 100px;
+        transition: all 300ms ease-in-out;
       }
       100% {
         opacity: 1;
         height: fit-content;
+        transition: all 300ms ease-in-out;
       }
 
     }
@@ -160,6 +163,7 @@ fieldset{
       100% {
         opacity: 0;
         height: 0;
+        transition: all 300ms ease-in-out;
       }
 
     }
@@ -172,16 +176,21 @@ fieldset{
 
 /* HTML: <div class="loader"></div> */
 .loader {
-  width: 50px;
-  --b: 8px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: #514b82;
-  -webkit-mask:
-    repeating-conic-gradient(#0000 0deg,#000 1deg 70deg,#0000 71deg 90deg),
-    radial-gradient(farthest-side,#0000 calc(100% - var(--b) - 1px),#000 calc(100% - var(--b)));
-  -webkit-mask-composite: destination-in;
-          mask-composite: intersect;
-  animation: l5 1s infinite;
-}
-@keyframes l5 {to{transform: rotate(.5turn)}}
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    } 

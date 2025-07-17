@@ -9,6 +9,7 @@ import {
     reauthenticateWithCredential,
     updatePassword,
     deleteUser,
+    updateEmail,
  } from "firebase/auth";
 import {
     setDoc,
@@ -18,7 +19,8 @@ import {
     deleteDoc,
     query,
     where,
-    collection
+    collection,
+    serverTimestamp
 } from 'firebase/firestore'
 import { auth, db } from "./firebase";
 import { logLoginActivity } from "./logLoginActivity";
@@ -52,9 +54,10 @@ export const useAuthStore = create((set) => ({
                 uid: user.uid,
                 uname,
                 email,
-                createdAt: new Date(),
-                lastLogin: new Date(),                
-                uploadedTasks: [],          
+                createdAt: serverTimestamp(),
+                lastLogin: serverTimestamp(),                
+                uploadedTasks: [], 
+                pendingTasks: [],         
                 completedTasks: [],
                 totalEarnings : 0                               
                 });
@@ -164,9 +167,7 @@ export const useAuthStore = create((set) => ({
             const credentail = EmailAuthProvider.credential(currentemail, password);
             await reauthenticateWithCredential(user, credentail);
 
-            await updateProfile(user, {
-                email: newEmail
-            });
+            await updateEmail(user, newEmail)
 
             return {
                 success: true, 
@@ -180,6 +181,19 @@ export const useAuthStore = create((set) => ({
         } finally {
             set({ isLoading: false });
         }
+    },
+
+    applyForTask: async (userId, taskId) => {
+        const userRef = doc(db, "users", userId);
+        const taskRef = doc(db, "tasks", taskId);
+
+        await updateDoc(userRef, {
+            pendingTasks: arrayUnion(taskId)
+        });
+
+        await updateDoc(taskRef, {
+            unapprovedApplicants: arrayUnion(userId)
+        });
     },
 
     deleteAccount: async (password) => {
@@ -197,11 +211,13 @@ export const useAuthStore = create((set) => ({
             await deleteUser(user);
 
             await deleteDoc(doc(db, "users", user.uid))
-            const q = query(collection(db, "tasks"), where("uploaderEmail", "==", user.email))
-            const tasksSnapshot = await getDocs(q);
-            for (const taskDoc of tasksSnapshot.docs) {
-                await deleteDoc(doc(db, "tasks", taskDoc.id));
-            }
+            const tasksSnapshot = await getDocs(collection(db, "tasks"));
+            tasksSnapshot.docs.forEach(async (taskDoc) => {
+                await updateDoc(taskDoc.ref, {
+                    unapprovedApplicants: arrayRemove(user.uid),
+                    completedBy: arrayRemove(user.uid)
+                });
+            });
             
             set({
                 user: null

@@ -9,7 +9,7 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../../Utils/firebase';
 
  const TaskUploadModal = ({ isOpen, onClose }) => {
-  const { user } = useAuthStore();
+  const { user, applyForTask } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
 
  

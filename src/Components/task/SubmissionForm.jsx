@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useAuthStore } from '../../Utils/useAuthStore'
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../../Utils/firebase'
-import { set } from 'date-fns'
 import toast from 'react-hot-toast'
 import { Formik } from 'formik'
 import { submitTaskSchema } from '../../Utils/schemas/schema'
@@ -12,7 +11,7 @@ const SubmissionForm = ({ taskId }) => {
   const [file, setFile] = useState(null)
   const { sendMessage } = useMessageStore()
   const [submitting, setSubmitting] = useState(false)
-  const { user, setUser } = useAuthStore()
+  const { user, setUser, applyForTask } = useAuthStore()
 
   const checkIfTaskCompleted = async () => {
     const taskDoc = await getDoc(doc(db, 'tasks', taskId))
@@ -30,34 +29,29 @@ const SubmissionForm = ({ taskId }) => {
     if (!isTaskCompleted) {
     try{
       const taskDoc = await getDoc(doc(db, 'tasks', taskId))
-      await updateDoc(doc(db, 'users', user.uid), {
-        completedTasks: arrayUnion(taskId),
-        totalEarnings: user.totalEarnings + taskDoc.data().commissionPrice
-      } )
+      
       await sendMessage({
         senderId: user.uid,
         receiverId: taskDoc.data().uploadedBy,
-        text : proof,
+        text : `${proof} of completion for task ${taskDoc.data().title}`,
         type: 'text'
       })
+
+      await applyForTask(user.uid, taskId)
 
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       if (userDoc.exists()) {
         setUser({ ...user, ...userDoc.data() });
       }
 
-
-      await updateDoc(doc(db, 'tasks', taskId), {
-        completedBy : arrayUnion(user.uid)
-      })
-      toast.success('Task completed successfully!')
+      toast.success('Proof Submitted successfully!')
     } catch(err){
       console.error('An Error Ocurred: ' + err.message)
     } finally {
       setSubmitting(false)
     }
   } else {
-    toast.error('You have already completed this task.')
+    toast.error('Proof still under review or already submitted.')
     setSubmitting(false)
   }
 }

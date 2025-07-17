@@ -10,6 +10,7 @@ export const uploadTaskFunction = async (task, uid, email) => {
             uploadedBy : uid,
             uploaderEmail : email,
             completedBy : [],
+            unapprovedApplicants: [],
             status : 'pending',
             createdAt : serverTimestamp()
         })
