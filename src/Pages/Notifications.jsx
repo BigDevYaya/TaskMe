@@ -1,30 +1,32 @@
 import { Menu } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import MobileNav from '../Components/MobileNav'
+import { collection, onSnapshot } from 'firebase/firestore'
+import { useAuthStore } from '../Utils/useAuthStore'
+import { db } from '../Utils/firebase'
 
-const mockNotifications = [
-  {
-    id: 1,
-    message: 'Your task "Write a product review" was approved!',
-    date: '2025-07-05',
-    read: false,
-  },
-  {
-    id: 2,
-    message: 'You earned ₦100 for completing "Instagram Follow".',
-    date: '2025-07-04',
-    read: true,
-  },
-  {
-    id: 3,
-    message: 'New task available: "Answer a 5-minute survey".',
-    date: '2025-07-03',
-    read: false,
-  },
-]
+
 
 const Notifications = () => {
+  const [notifications, setNotifications] = useState([])
+  const { user } = useAuthStore();
   const [showNav, setShowNav] = useState(false)
+
+  useEffect(() => {
+    const unSub = onSnapshot(
+      collection(db, 'users', user.uid, 'notifications'),
+      (snapshot) => {
+        const notifications = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }))
+
+      setNotifications(notifications)
+      }
+    )
+
+    return () => unSub()
+  }, [user.uid])
   return (
     <div className="min-h-scree">
       <div className='flex items-center gap-2 bg-white py-5 px-3 justify-start shadow-sm'>
@@ -37,18 +39,18 @@ const Notifications = () => {
       <div className="max-w-2xl mx-auto mt-8 p-4 ">
         <h2 className="text-lg font-semibold mb-4 text-gray-700">Your Notifications</h2>
         <ul className="space-y-4">
-          {mockNotifications.length === 0 ? (
+          {notifications.length === 0 ? (
             <li className="p-4 bg-gray-100 rounded-lg text-gray-700">
               You have no notifications.
             </li>
           ) : (
-            mockNotifications.map(n => (
+            notifications.map(n => (
               <li
                 key={n.id}
-                className={`p-4 rounded-lg flex justify-between items-center ${n.read ? 'bg-gray-100 text-gray-500' : 'bg-blue-50 text-gray-800 font-semibold'}`}
+                className={`p-4 rounded-lg flex justify-between items-center ${n.isRead ? 'bg-gray-100 text-gray-500' : 'bg-blue-50 text-gray-800 font-semibold'}`}
               >
                 <span>{n.message}</span>
-                <span className="text-xs">{n.date}</span>
+                <span className="text-xs">{n.createdAt?.seconds && new Date(n.createdAt.seconds * 1000).toLocaleDateString()}</span>
               </li>
             ))
           )}

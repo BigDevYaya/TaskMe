@@ -12,6 +12,7 @@ const UserTaskDetail = () => {
   const [approvedUsers, setApprovedUsers] = useState([]);
   const [pendingUsers, setPendingUsers] = useState([]);
   const [submissions, setSubmissions] = useState([]);
+  const [taskName, setTaskName] = useState('')
   const [isLoading, setIsLoading] = useState(true);
   const { taskId } = useParams();
 

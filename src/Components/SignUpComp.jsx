@@ -34,12 +34,13 @@ const SignUpComp = () => {
               confirmPassword: ''
             }}
             validationSchema={signupSchema}
-            onSubmit={ async ({uname, email, password}) =>{
-              const res = await register(uname, email, password)
+            onSubmit={ async (values, actions) =>{
+              const res = await register(values.uname, values.email, values.password)
               if(!res.success){
                 toast.error(res.error)
               } else {
                 toast.success(`Welcome on board, ${res.user.displayName}`),
+                actions.resetForm()
                 navigate(routes.dashboard)
               }
             }}

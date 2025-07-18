@@ -1,6 +1,8 @@
 import React from 'react'
+import { useAuthStore } from '../../Utils/useAuthStore'
 
-const SubmissionItem = ({ submission, onApprove, onReject, approvedUsers, pendingUsers }) => {
+const SubmissionItem = ({ task, submission, onApprove, onReject, approvedUsers, pendingUsers }) => {
+  const { addNotification } = useAuthStore();
   return (
     <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4">
     <div>
@@ -15,7 +17,10 @@ const SubmissionItem = ({ submission, onApprove, onReject, approvedUsers, pendin
     </div>
     <div className="flex gap-2">
       <button
-        onClick={() => onApprove(submission.id)}
+        onClick={async () => {
+          await onApprove(submission.id)
+          await addNotification(submission.id, `You received payment for completing ${task.name}`, "payment")
+        }}
         className="border border-gray-300 rounded px-3 py-1 hover:bg-gray-100"
       >
         Approve

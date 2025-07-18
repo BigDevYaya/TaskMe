@@ -4,9 +4,12 @@ import Notification from '../Components/Notification'
 import ProfileDropDown from './ProfileDropDown'
 import { useAuthStore } from '../Utils/useAuthStore'
 import { useLocation } from 'react-router'
+import { collection, onSnapshot } from 'firebase/firestore'
+import { db } from '../Utils/firebase'
 
 const Header = ({ title, explore, className, setShowNav }) => {
   const [showNotif, setShowNotif] = useState(false)
+  const [notifications, setNotifications] = useState([]);
   const [showLogout, setShowLogout] = useState(false)
   const [color, setColor] = useState('')
 
@@ -23,6 +26,22 @@ const Header = ({ title, explore, className, setShowNav }) => {
     const blue = Math.floor(Math.random() * 100 + 1)
     setColor(`rgb(${red}, ${green}, ${blue})`)
   }
+
+  useEffect(() => {
+      const unSub = onSnapshot(
+        collection(db, 'users', user.uid, 'notifications'),
+        (snapshot) => {
+          const notifications = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }))
+  
+          setNotifications(notifications)
+        }
+      )
+  
+      return () => unSub()
+    }, user.uid)
 
   useEffect(() => generateColor(), [])
 
@@ -55,9 +74,14 @@ const Header = ({ title, explore, className, setShowNav }) => {
             <button onClick={() => setShowNotif((prev) => !prev)} className="focus:outline-none">
               <Bell />
             </button>
+            {
+              notifications.filter(notification => notification.isRead === 'false').length > 0 &&
             <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5 absolute -top-1 -right-2">
-              3
+              {
+                 notifications.filter(notification => notification.isRead === 'false').length
+              }
             </span>
+            }
           </div>
 
           <div

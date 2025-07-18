@@ -21,7 +21,7 @@ const TaskInfoCard = ({ task }) => {
         </div>
         <div className="flex flex-col p-3 bg-gray-50 rounded-lg">
           <strong className="text-gray-600 text-lg sm:text-xl mb-1">Created Date:</strong>
-          <span className="text-gray-700 text-base sm:text-lg">{new Date(task.createdAt.seconds * 1000).toDateString()}</span>
+          <span className="text-gray-700 text-base sm:text-lg">{task.createdAt?.seconds && new Date(task.createdAt * 1000).toDateString()}</span>
         </div>
         <div className="flex flex-col p-3 bg-gray-50 rounded-lg">
           <strong className="text-gray-600 text-lg sm:text-xl mb-1">Deadline:</strong>

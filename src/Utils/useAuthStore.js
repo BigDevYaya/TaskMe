@@ -20,7 +20,8 @@ import {
     query,
     where,
     collection,
-    serverTimestamp
+    serverTimestamp,
+    addDoc
 } from 'firebase/firestore'
 import { auth, db } from "./firebase";
 import { logLoginActivity } from "./logLoginActivity";
@@ -61,6 +62,9 @@ export const useAuthStore = create((set) => ({
                 completedTasks: [],
                 totalEarnings : 0                               
                 });
+            
+            const { addNotification } = useAuthStore.getState();
+            await addNotification(user.uid, `Welcome on board ${uname}`, 'sign-up')
             
             const userDoc = await getDoc(doc(db, "users", user.uid));
             let userData = {};
@@ -194,6 +198,19 @@ export const useAuthStore = create((set) => ({
         await updateDoc(taskRef, {
             unapprovedApplicants: arrayUnion(userId)
         });
+    },
+
+    addNotification: async (uid, message, type) => {
+        try {
+            await addDoc(collection(db, 'users', uid, "notifications"), {
+                message,
+                type, 
+                isRead: false,
+                createdAt: serverTimestamp(),
+            });
+        } catch (err) {
+            console.error("failed to add notification :", err)
+        }
     },
 
     deleteAccount: async (password) => {
