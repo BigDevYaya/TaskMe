@@ -85,16 +85,39 @@ const UserTaskDetail = () => {
   }, [taskId]);
 
   const handleApprove = async (userId) => {
+  try {
+    // Fetch the user's current total earnings
+    const userRef = doc(db, 'users', userId);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      toast.error('User does not exist');
+      return;
+    }
+
+    const userData = userSnap.data();
+    const currentEarnings = userData.totalEarnings || 0;
+    const taskAmount = task.commissionPrice || 0; 
+
     await updateDoc(doc(db, 'tasks', taskId), {
       unapprovedApplicants: arrayRemove(userId),
       completedBy: arrayUnion(userId),
     });
-    await updateDoc(doc(db, 'users', userId), {
+
+    await updateDoc(userRef, {
       pendingTasks: arrayRemove(taskId),
       completedTasks: arrayUnion(taskId),
+      totalEarnings: currentEarnings + taskAmount,
     });
+
+    toast.success('User approved successfully');
     await getSubmissions();
-  };
+  } catch (error) {
+    console.error('Error approving user:', error);
+    toast.error('Failed to approve user');
+  }
+};
+
 
   const handleReject = async (userId) => {
     await updateDoc(doc(db, 'tasks', taskId), {

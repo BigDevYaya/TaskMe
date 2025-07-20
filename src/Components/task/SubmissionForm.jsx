@@ -8,10 +8,10 @@ import { submitTaskSchema } from '../../Utils/schemas/schema'
 import { useMessageStore } from '../../Utils/useMessageStore'
 
 const SubmissionForm = ({ taskId }) => {
-  const [file, setFile] = useState(null)
   const { sendMessage } = useMessageStore()
   const [submitting, setSubmitting] = useState(false)
-  const { user, setUser, applyForTask, addNotification } = useAuthStore()
+  const authStore = useAuthStore.getState()
+  const user = authStore.user
 
   const checkIfTaskCompleted = async () => {
     const taskDoc = await getDoc(doc(db, 'tasks', taskId))
@@ -37,13 +37,13 @@ const SubmissionForm = ({ taskId }) => {
         type: 'text'
       })
 
-      await applyForTask(user.uid, taskId)
+      await authStore.applyForTask(user.uid, taskId)
 
-      await addNotification(taskDoc.data().uploadedBy, `You received a new message from ${user.uname}`, "message")
+      await authStore.addNotification(taskDoc.data().uploadedBy, `You received a new message from ${user.uname}`, "message")
 
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       if (userDoc.exists()) {
-        setUser({ ...user, ...userDoc.data() });
+        authStore.setUser({ ...user, ...userDoc.data() });
       }
 
       toast.success('Proof Submitted successfully!')

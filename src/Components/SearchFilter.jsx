@@ -31,8 +31,11 @@ const SearchFilter = () => {
   }
 
   return (
-    <div className="relative inline-block text-left">
-      <button className="flex items-center gap-4" onMouseEnter={showDropDown}
+    <div 
+    className="relative inline-block text-left"
+    onMouseEnter={showDropDown}
+    onMouseLeave={hideDropDown}>
+      <button className="flex items-center gap-4" 
       
       >
         Filter by {selectedFilter}{' '}
@@ -47,7 +50,7 @@ const SearchFilter = () => {
             isOpen ? 'animate-filter' : 'animate-filterUp'
           } transition-opacity duration-300 ${render || 'animate-filterUp'
           } bg-white rounded-lg shadow-md`}
-          onMouseLeave={hideDropDown}
+          
         >
           <ul className="py-2 px-4">
             {filters.map((filter, i) => (

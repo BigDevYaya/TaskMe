@@ -11,6 +11,7 @@ import { storage } from '../../Utils/firebase';
  const TaskUploadModal = ({ isOpen, onClose }) => {
   const { user, applyForTask } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
+  // const isLoading = true
 
  
   if (!isOpen) return null;
@@ -18,7 +19,9 @@ import { storage } from '../../Utils/firebase';
   return (
     <div className="fixed inset-0 bg-black/55  bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-5xl h-11/12 overflow-y-auto">
-        {/* Header */}
+      
+      
+            {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-2xl font-bold text-gray-800">Create New Task</h2>
           <button
@@ -334,12 +337,7 @@ import { storage } from '../../Utils/firebase';
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col gap-4 lg:flex-col space-x-4 pt-6 border-t border-gray-200">
-            {
-              isLoading ? <div className='flex w-full items-center justify-center'>
-                <div className='loader'></div>
-              </div> : (
-                <>
+          <div className="flex flex-col lg:flex-row gap-4  space-x-4 pt-6 border-t border-gray-200">
                 <button
               type='submit'
               disabled={props.isSubmitting || isLoading}
@@ -353,14 +351,17 @@ import { storage } from '../../Utils/firebase';
               className="flex-1 bg-gray-200 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-300 transition-colors font-medium">
               Cancel
             </button>
-            </>
-              ) 
-            }
           </div>
         </form>
             )
           }
         </Formik>
+
+        {
+          isLoading && <div className='flex absolute top-0 right-0 w-full h-full items-center justify-center bg-black/35'>
+            <div className='loader'></div>
+          </div>
+        }
       </div>
     </div>
   );

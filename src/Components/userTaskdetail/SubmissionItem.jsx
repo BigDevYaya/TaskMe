@@ -15,11 +15,13 @@ const SubmissionItem = ({ task, submission, onApprove, onReject, approvedUsers, 
         </span>
       </p>
     </div>
-    <div className="flex gap-2">
+    {
+      submission.status === 'approved' ? <p className='text-gray-500'>Approved</p> : (
+        <div className="flex gap-2">
       <button
         onClick={async () => {
           await onApprove(submission.id)
-          await addNotification(submission.id, `You received payment for completing ${task.name}`, "payment")
+          await addNotification(submission.id, `You received ₦${task.commissionPrice} for completing ${task.title}`, "payment")
         }}
         className="border border-gray-300 rounded px-3 py-1 hover:bg-gray-100"
       >
@@ -32,6 +34,8 @@ const SubmissionItem = ({ task, submission, onApprove, onReject, approvedUsers, 
         Reject
       </button>
     </div>
+      )
+    }
   </div>
   )
 }

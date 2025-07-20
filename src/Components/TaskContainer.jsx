@@ -18,7 +18,7 @@ useEffect(() => {
     try {
       const taskList = snapshot.docs
         .map(doc => ({ id: doc.id, ...doc.data() }))
-        .filter(task => task.visibility !== 'Private' && task.uploadedBy !== user?.uid && !task.completedBy?.includes(user?.uid))
+        .filter(task => task.visibility !== 'Private' && task.uploadedBy !== user?.uid && !task.completedBy?.includes(user?.uid) && !task.unapprovedApplicants?.includes(user?.uid))
 
       setTasks(taskList)
     } catch (error) {

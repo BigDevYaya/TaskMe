@@ -64,7 +64,7 @@ const Notification = ({setShowNotif}) => {
       </div>
       <Link 
       className="px-4 py-2 text-center text-sm text-indigo-600 hover:underline cursor-pointer"
-      to={'/notifications'}>
+      to={'/notification'}>
         View all
       </Link>
     </div>

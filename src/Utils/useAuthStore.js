@@ -17,6 +17,8 @@ import {
     getDoc,
     getDocs,
     deleteDoc,
+    updateDoc,
+    arrayUnion,
     query,
     where,
     collection,
@@ -188,6 +190,7 @@ export const useAuthStore = create((set) => ({
     },
 
     applyForTask: async (userId, taskId) => {
+        try {
         const userRef = doc(db, "users", userId);
         const taskRef = doc(db, "tasks", taskId);
 
@@ -198,6 +201,9 @@ export const useAuthStore = create((set) => ({
         await updateDoc(taskRef, {
             unapprovedApplicants: arrayUnion(userId)
         });
+        } catch (err){
+            console.error(err)
+        }
     },
 
     addNotification: async (uid, message, type) => {

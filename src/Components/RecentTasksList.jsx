@@ -1,32 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { CalendarDays, BadgeCheck } from 'lucide-react'
-import {  doc, getDoc } from 'firebase/firestore'
+import {  doc, getDoc, onSnapshot } from 'firebase/firestore'
 import { db } from '../Utils/firebase'
 import { useAuthStore } from '../Utils/useAuthStore'
 
-const mockTasks = [
-  {
-    id: 1,
-    title: 'Follow Instagram account',
-    date: '2025-06-17',
-    price: 50,
-    status: 'Completed',
-  },
-  {
-    id: 2,
-    title: 'Answer a 5-minute survey',
-    date: '2025-06-16',
-    price: 100,
-    status: 'Completed',
-  },
-  {
-    id: 3,
-    title: 'Write product review',
-    date: '2025-06-15',
-    price: 80,
-    status: 'Completed',
-  },
-]
 
 
 
@@ -34,34 +11,31 @@ const mockTasks = [
 const RecentTasksList = () => {
   const [tasks, setTasks] = useState([])
   const { user } = useAuthStore()
-  useEffect(() => {
-  const fetchRecentTasks = async () => {
-    setTasks([]);
-    const userLastThreeTasks = user?.completedTasks?.slice(0, 3) || []
-    const fetchedTasks = await Promise.all(
-      userLastThreeTasks?.map(async (element) => {
-        const task = await getDoc(doc(db, 'tasks', element))
-        if (task.exists()) {
-          return {...task.data(), id: task.id}
-        } else {
-          return null
+useEffect(() => {
+  const unSubscribes = []
+  setTasks([]);
+  const userLastThreeTasks = user?.completedTasks?.slice(0, 3) || []
+  userLastThreeTasks.forEach(taskId => {
+      const taskRef = doc(db, 'tasks', taskId)
+      const unSub = onSnapshot(taskRef, taskSnap => {
+        if(taskSnap.exists()){
+          setTasks(prev => {
+            const updatedTask = { ...taskSnap.data(), id: taskSnap.id };
+            const withoutCurrent = prev.filter(t => t.id !== taskSnap.id);
+            return [...withoutCurrent, updatedTask].sort((a,b) => {
+              return userLastThreeTasks.indexOf(a.id) - userLastThreeTasks.indexOf(b.id)
+            })
+          })
         }
-      })  
-    );
+      })
+      unSubscribes.push(unSub)
+    });
 
-    // Remove nulls and duplicates by id
-    const uniqueTasks = [];
-    const seen = new Set();
-    for (const t of fetchedTasks.filter(Boolean)) {
-      if (!seen.has(t.id)) {
-        uniqueTasks.push(t);
-        seen.add(t.id);
-      }
-    }
-    setTasks(uniqueTasks);
-  }
 
-  fetchRecentTasks()
+  return () => {
+    unSubscribes.forEach((unSub)=> unSub())
+  };
+    
 }, [user?.completedTasks])
   return (
     <div className="bg-white p-4 rounded-xl shadow-sm">
