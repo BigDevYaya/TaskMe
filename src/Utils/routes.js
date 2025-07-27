@@ -5,6 +5,7 @@ export const routes = {
     messages: '/messages',
     taskdetail: '/exploretasks/:taskId',
     login: '/login',
+    resetPassword: '/resetpassword',
     signup: 'signup',
     userTaskdetail: '/uploadedtasks/:taskId',
     completedTasks: '/completedtasks',

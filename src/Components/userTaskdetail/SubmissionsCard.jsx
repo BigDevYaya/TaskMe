@@ -13,7 +13,7 @@ const SubmissionsCard = ({ task, submissions, pendingUsers, approvedUsers, onApp
     </div>
 
     <h3 className="text-xl font-medium mt-6">User Submissions</h3>
-    <div className="space-y-4 max-h-80 overflow-y-scroll">
+    <div className="space-y-4 max-h-80 overflow-y-auto">
         {
           submissions.length ?
           submissions.map(submission => 

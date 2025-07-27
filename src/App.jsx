@@ -14,6 +14,7 @@ import SignUp from "./Pages/SignUp"
 import Notifications from "./Pages/Notifications"
 import { Toaster } from "react-hot-toast"
 import UserTaskDetail from "./Pages/UserTaskDetail"
+import ResetPassword from "./Pages/ResetPassword"
 
 function App() {
   const user = false
@@ -21,21 +22,22 @@ function App() {
     <>
     <Toaster />
     <Routes>
-       <Route element={<ProtectedRoute />}>
+      <Route element={<ProtectedRoute />}>
         <Route element={<Home />}>
-        <Route path={routes.dashboard} element={<Dashboard />} />
-        <Route path={routes.exploreTasks}element={<Exploretasks />} />
-        <Route path={routes.messages} element={<Messages />} />
-        <Route path={routes.settings} element={<Settings />} />
-        <Route path={routes.helpCenter} element={<HelpCenter />} />
-        <Route path={routes.uploaded} element={<UploadedTasks />} />
-        <Route path={routes.taskdetail} element={<TaskDetailPage />} />
-        <Route path={routes.notifications} element={<Notifications />} />
-        <Route path={routes.userTaskdetail} element={<UserTaskDetail />} />
-      </Route>
-        </Route> 
+          <Route path={routes.dashboard} element={<Dashboard />} />
+          <Route path={routes.exploreTasks}element={<Exploretasks />} />
+          <Route path={routes.messages} element={<Messages />} />
+          <Route path={routes.settings} element={<Settings />} />
+          <Route path={routes.helpCenter} element={<HelpCenter />} />
+          <Route path={routes.uploaded} element={<UploadedTasks />} />
+          <Route path={routes.taskdetail} element={<TaskDetailPage />} />
+          <Route path={routes.notifications} element={<Notifications />} />
+          <Route path={routes.userTaskdetail} element={<UserTaskDetail />} />
+        </Route>
+      </Route> 
   
       <Route path={routes.login} element={<Login />} />
+      <Route path={routes.resetPassword} element={<ResetPassword />} />
       <Route path={routes.signup} element={<SignUp />} />
     </Routes>
     </>

@@ -17,7 +17,8 @@ const SubmissionForm = ({ taskId }) => {
     const taskDoc = await getDoc(doc(db, 'tasks', taskId))
     if (taskDoc.exists()) {
       const completedBy = taskDoc.data().completedBy || []
-      return completedBy.includes(user.uid)
+      const pendingApplicants = taskDoc.data().unapprovedApplicants || []
+      return completedBy.includes(user.uid) || pendingApplicants.includes(user.uid)
     }
     return false
   }
@@ -33,7 +34,7 @@ const SubmissionForm = ({ taskId }) => {
       await sendMessage({
         senderId: user.uid,
         receiverId: taskDoc.data().uploadedBy,
-        text : `${proof} of completion for task ${taskDoc.data().title}`,
+        text : `${proof} --- for completion for task ${taskDoc.data().title}`,
         type: 'text'
       })
 

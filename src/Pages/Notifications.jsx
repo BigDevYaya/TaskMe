@@ -38,7 +38,7 @@ const Notifications = () => {
 
       <div className="max-w-2xl mx-auto mt-8 p-4 ">
         <h2 className="text-lg font-semibold mb-4 text-gray-700">Your Notifications</h2>
-        <ul className="space-y-4">
+        <ul className="space-y-4 flex flex-col-reverse gap-4">
           {notifications.length === 0 ? (
             <li className="p-4 bg-gray-100 rounded-lg text-gray-700">
               You have no notifications.

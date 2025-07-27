@@ -71,6 +71,9 @@ const LoginComp = () => {
                   }
                   </div>
                   { props.errors.password && props.touched.password && <div id='feedback' className='text-red-500 text-sm'>{props.errors.password}</div> }
+                <Link 
+                className='underline'
+                to={'/resetpassword'}>Forgot Password?</Link>
                 </fieldset>
                 <button
                 type='submit'
@@ -85,7 +88,7 @@ const LoginComp = () => {
               )
             }
             </Formik>
-            <Link>Forgot Password?</Link>
+            
             <div className='h-0.5 bg-gray-400 my-3 w-full'></div>
             <div className='flex items-center gap-2'>
               <h2>Don't have an account?</h2> 
