@@ -41,7 +41,7 @@ const Header = ({ title, explore, className, setShowNav }) => {
       )
   
       return () => unSub()
-    }, user.uid)
+    }, [user.uid])
 
   useEffect(() => generateColor(), [])
 

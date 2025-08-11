@@ -30,6 +30,7 @@ const LoginComp = () => {
             onSubmit={ async ({email, password}) => {
               const res = await login(email, password)
               if(!res.success){
+                console.error(res.error)
                 toast.error(res.error)
               } else {
                 toast.success(`Welcome back ${res.user.displayName}`),

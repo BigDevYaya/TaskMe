@@ -27,16 +27,20 @@ import {
 } from 'firebase/firestore'
 import { auth, db } from "./firebase";
 import { logLoginActivity } from "./logLoginActivity";
+import { se } from "date-fns/locale";
+
+// export const user = sessionStorage.getItem("user") ? JSON.parse(sessionStorage.getItem("user")) : null;
 
 export const useAuthStore = create((set) => ({
-    user: null,
+    user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null,
     isLoading: false,
     setUser: (user) => set({ user }),
 
     initAuth: () => {
         onAuthStateChanged(auth, (user) => {
             set({
-                user: user || null, isLoading : false
+                user: user, 
+                isLoading : false
             });
         })
     },
@@ -113,6 +117,7 @@ export const useAuthStore = create((set) => ({
             user: mergedUser,
             isLoading: false
             });
+            localStorage.setItem("user", JSON.stringify(mergedUser));
 
             return {
             success: true,

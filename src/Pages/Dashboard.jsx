@@ -10,7 +10,6 @@ const Dashboard = () => {
       <DashboardStats />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="col-span-2 space-y-4">
-          <WeeklyTasksChart />
           <RecentTasksList />
         </div>
         <div className="space-y-4">
