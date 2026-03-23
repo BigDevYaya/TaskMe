@@ -1,31 +1,30 @@
-import { addDoc, arrayUnion, collection, serverTimestamp, updateDoc, doc } from "firebase/firestore"
-import { db } from "./firebase"
+import { addDoc, arrayUnion, collection, serverTimestamp, setDoc, doc } from "firebase/firestore"
+import { db } from "../Utils/firebase.js" // Make sure this path is correct for your setup
 
 export const uploadTaskFunction = async (task, uid, email) => {
-    
-    try{
-    
+    try {
         const taskRef = await addDoc(collection(db, 'tasks'), {
             ...task,
-            uploadedBy : uid,
-            uploaderEmail : email,
-            completedBy : [],
+            uploadedBy: uid,
+            uploaderEmail: email,
+            completedBy: [],
             unapprovedApplicants: [],
-            status : 'pending',
-            createdAt : serverTimestamp()
+            status: 'pending',
+            createdAt: serverTimestamp()
         })
 
         const taskId = taskRef.id
         const userRef = doc(db, 'users', uid)
-        await updateDoc(userRef, {
+        
+        // Changed from updateDoc to setDoc with merge: true
+        await setDoc(userRef, {
             uploadedTasks: arrayUnion(taskId)
-        })
+        }, { merge: true })
 
-        console.log('Task Has Been uploaded with ID: ', taskRef.id)
-        console.log(taskId)
-        return taskRef.id
-    } catch(err){
-        console.log('Upload Failed: ', err)
+        console.log('Task Has Been uploaded with ID: ', taskId)
+        return taskId
+    } catch(err) {
+        console.error('Upload Failed: ', err)
         throw err
     } 
 }

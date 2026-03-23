@@ -5,38 +5,37 @@ import { dummyChat } from '../assets/Data/chatMessages'
 
 const Messages = ({ receiverId }) => {
   const { user } = useAuthStore()
-  const { messages, fetchMessages, clearMessages } = useMessageStore()
+  const { messages, fetchMessages } = useMessageStore()
 
   useEffect(() => {
-    if(user.uid && receiverId) {
-      fetchMessages(user.uid, receiverId)
-      return () => clearMessages()
-    }
-  }, [user?.uid, receiverId])
+    fetchMessages(receiverId)
+  }, [receiverId, fetchMessages])
+
   return (
-    <>
-    {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex ${
-                msg.senderId === user.uid ? 'justify-end' : 'justify-start'
-              }`}
-            >
-              <div
-                className={`max-w-xs  text-sm `}
-              >
-                <p className={`break-words px-4 py-2 rounded-lg ${
-                  msg.senderId === user.uid
-                    ? 'bg-blue-500 text-white rounded-br-none'
-                    : 'bg-gray-200 text-gray-900 rounded-bl-none'
-                } `}>{msg.text}</p>
-                <span className="block text-[10px] text-gray-800 mt-1 text-right">
-                  {msg.createdAt?.toDate().toLocaleTimeString() ?? 'Just now'}
+    <div className="flex flex-col gap-4 p-6">
+      {messages.map((msg) => {
+        const isMe = msg.senderId === user.uid
+        return (
+          <div key={msg.id} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
+            <div className={`max-w-[70%] group`}>
+              <div className={`px-4 py-2.5 rounded-2xl text-sm shadow-sm ${
+                isMe 
+                  ? 'bg-blue-600 text-white rounded-tr-none' 
+                  : 'bg-slate-100 text-slate-800 rounded-tl-none'
+              }`}>
+                <p className='leading-relaxed'>{msg.text}</p>
+              </div>
+              <div className={`flex items-center gap-1 mt-1 ${isMe ? 'justify-end' : 'justify-start'}`}>
+                <span className='text-[10px] text-slate-400 font-medium'>
+                  {msg.createdAt?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
+                {isMe && <div className="text-blue-500 text-[10px] font-bold">✓✓</div>}
               </div>
             </div>
-          ))}
-    </>
+          </div>
+        )
+      })}
+    </div>
   )
 }
 

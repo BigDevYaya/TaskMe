@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Bell, Menu, Search } from 'lucide-react'
+import { Bell, Search, Menu, SlidersHorizontal } from 'lucide-react'
 import Notification from '../Components/Notification'
 import ProfileDropDown from './ProfileDropDown'
 import { useAuthStore } from '../Utils/useAuthStore'
@@ -9,113 +9,110 @@ import { db } from '../Utils/firebase'
 
 const Header = ({ title, explore, className, setShowNav }) => {
   const [showNotif, setShowNotif] = useState(false)
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState([])
   const [showLogout, setShowLogout] = useState(false)
   const [color, setColor] = useState('')
 
   const location = useLocation()
-  const isDashboardPage = location.pathname === '/'
   const { user } = useAuthStore()
-  const formattedName = user.displayName.split(' ')
-  const [fname, lname] = formattedName
-  const format = fname[0].toUpperCase() + lname[0].toUpperCase()
+  
+  // 1. Fallback to 'User' if displayName is null/undefined
+  const displayName = user?.displayName || 'User'
+  
+  // 2. Split the name
+  const [fname, lname] = displayName.trim().split(' ')
+  
+  // 3. Safely grab the first letter of each, or nothing if lname is missing
+  const format = `${fname?.[0] || ''}${lname?.[0] || ''}`.toUpperCase() || 'U'
 
   const generateColor = () => {
-    const red = Math.floor(Math.random() * 100 + 1)
-    const green = Math.floor(Math.random() * 100 + 1)
-    const blue = Math.floor(Math.random() * 100 + 1)
-    setColor(`rgb(${red}, ${green}, ${blue})`)
+    const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#14b8a6', '#f59e0b', '#3b82f6']
+    setColor(colors[Math.floor(Math.random() * colors.length)])
   }
 
   useEffect(() => {
-      const unSub = onSnapshot(
-        collection(db, 'users', user.uid, 'notifications'),
-        (snapshot) => {
-          const notifications = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          }))
-  
-          setNotifications(notifications)
-        }
-      )
-  
-      return () => unSub()
-    }, [user.uid])
+    const unSub = onSnapshot(
+      collection(db, 'users', user.uid, 'notifications'),
+      (snapshot) => {
+        const notifications = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+        setNotifications(notifications)
+      }
+    )
+    return () => unSub()
+  }, [user.uid])
 
   useEffect(() => generateColor(), [])
 
+  const unreadCount = notifications.filter(n => n.isRead === 'false').length
+
   return (
-    <div className="flex flex-col items-start justify-between h-fit z-50 p-4 bg-white transition-all duration-500 w-full">
-      {/* Top section */}
-      <div className="flex justify-between mx-1.5 w-full items-center flex-wrap gap-4">
-        <div className="flex items-center gap-4 flex-1 min-w-0">
-          <Menu className="lg:hidden cursor-pointer" onClick={() => setShowNav((prev) => !prev)} />
-          <p className="text-black font-bold text-xl md:text-2xl truncate">{title}</p>
-        <div
-          className={`${
-           className ? className :  'hidden '
-          } flex items-center border border-blue-100 px-4 py-2 rounded-2xl w-full md:w-[400px] max-w-full`}
-        >
-          <input
-            type="text"
-            className="focus:outline-none flex-1 text-sm md:text-base w-full"
-            placeholder="Search tasks..."
-          />
-          <Search className="text-blue-400" />
-        </div>
+    <div className="w-full bg-white px-6 pt-6 pb-4">
+
+      {/* Top row */}
+      <div className="flex items-center justify-between gap-4">
+
+        {/* Left: hamburger + title */}
+        <div className="flex items-center gap-3 min-w-0">
+          <button
+            className="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
+            onClick={() => setShowNav(prev => !prev)}
+          >
+            <Menu className="w-5 h-5 text-gray-500" />
+          </button>
+
+          <div className="min-w-0">
+            <h1 className="text-[22px] font-bold text-gray-900 tracking-tight leading-none truncate">
+              {title}
+            </h1>
+            <p className="text-xs text-gray-400 mt-0.5 font-medium">
+              {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+            </p>
+          </div>
         </div>
 
-        {/* Search bar - hidden on small screens by default */}
+        {/* Right: search + actions */}
+        <div className="flex items-center gap-2 shrink-0">
 
-        {/* Right section: Notification + Profile */}
-        <div className="flex items-center gap-4 shrink-0">
-          <div className="relative">
-            <button onClick={() => setShowNotif((prev) => !prev)} className="focus:outline-none">
-              <Bell />
-            </button>
-            {
-              notifications.filter(notification => notification.isRead === 'false').length > 0 &&
-            <span className="bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5 absolute -top-1 -right-2">
-              {
-                 notifications.filter(notification => notification.isRead === 'false').length
-              }
-            </span>
-            }
+          {/* Search pill — desktop */}
+          <div className={`${className ? 'flex' : 'hidden md:flex'} items-center gap-2.5 bg-gray-50 border border-gray-100 hover:border-gray-200 px-3.5 py-2 rounded-xl w-[220px] transition-colors`}>
+            <Search className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+            <input
+              type="text"
+              className="flex-1 text-sm bg-transparent outline-none text-gray-700 placeholder-gray-400 w-full"
+              placeholder="Search tasks..."
+            />
           </div>
 
-          <div
-            className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-base cursor-pointer"
+          {/* Bell */}
+          <div className="relative">
+            <button
+              onClick={() => setShowNotif(prev => !prev)}
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 border border-gray-100 hover:bg-gray-100 transition-colors"
+            >
+              <Bell className="w-4 h-4 text-gray-600" />
+            </button>
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none">
+                {unreadCount}
+              </span>
+            )}
+          </div>
+
+          {/* Avatar */}
+          <button
+            className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm font-bold shrink-0 transition-transform hover:scale-105"
             style={{ backgroundColor: color }}
-            onClick={() => setShowLogout(!showLogout)}
+            onClick={() => setShowLogout(prev => !prev)}
           >
             {format}
-          </div>
+          </button>
+
         </div>
       </div>
 
-      {/* Explore section (optional) */}
-      <div
-          className={`${
-            isDashboardPage ? 'hidden' : 'md:hidden flex'
-          } flex items-center border border-blue-100 px-4 py-2 rounded-2xl w-full md:w-[400px] max-w-full mt-1.5`}
-        >
-          <input
-            type="text"
-            className="focus:outline-none flex-1 text-sm md:text-base w-full"
-            placeholder="Search tasks..."
-          />
-          <Search className="text-blue-400" />
-        </div>
-      <div
-        className={`w-full transition-all duration-700 ease-linear ${
-          explore ? 'max-h-[500px] mt-4' : 'max-h-0'
-        }`}
-      >
-        {explore}
-      </div>
+     
 
-      {/* Conditional Popovers */}
+      {/* Popovers */}
       {showNotif && <Notification setShowNotif={setShowNotif} />}
       {showLogout && <ProfileDropDown setShowLogout={setShowLogout} />}
     </div>

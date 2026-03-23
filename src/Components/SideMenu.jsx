@@ -1,55 +1,125 @@
 import { MessageCircleQuestion } from 'lucide-react'
 import { items } from '../Utils/navs'
 import { Link } from 'react-router'
-import React, {useEffect, useState} from 'react'
 
-const SideMenu = ({selectedIndex = 1}) => {
-  
+const SideMenu = ({ selectedIndex = 1 }) => {
+
+  // Split items into main nav and preferences (assumes logout/settings are at the end)
+  // Adjust these IDs to match your actual navs.js
+  const mainItems = items.filter(item => item.id <= 4);
+  const prefItems = items.filter(item => item.id >= 5);
+
   return (
-    <div className='lg:flex flex-col px-6 py-8 gap-6 w-[300px] sticky top-0 bg-white h-svh hidden'>
-      
-      {/* Title */}
-      <img src="./TaskMe.png" className='rounded-lg w-32 h-fit self-center'  alt="TaskMe" />
+    <div className='hidden lg:flex flex-col w-[240px] h-svh sticky top-0 shrink-0'
+      style={{ background: '#0f1624' }}>
 
-      <div className='flex-1 overflow-y-auto pr-1'>
-        <nav>
-          <ul className='flex flex-col gap-5'>
-            {items.map((item) => {
+      {/* Brand */}
+      <div className='px-6 border-b border-white/5'>
+        <img src='/TaskMe.png' alt='Logo' className='h-24' />
+        
+      </div>
+
+      {/* Nav */}
+      <div className='flex-1 overflow-y-auto px-3 py-5 flex flex-col gap-6'>
+
+        {/* Main nav */}
+        <div>
+          <ul className='flex flex-col gap-0.5'>
+            {mainItems.map((item) => {
               const isSelected = selectedIndex === item.id;
               return (
                 <Link
                   key={item.id}
                   to={item.to}
-                  className={`flex items-center gap-3 cursor-pointer transition px-4 py-2 rounded-md 
-                    ${isSelected ? `border-l-4 rounded-r-full bg-blue-400 border-l-blue-200 ${selectedIndex === 6 && 'bg-red-500 border-l-red-800'}` : ''}`}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 group
+                    ${isSelected
+                      ? 'bg-white/10 text-white'
+                      : 'text-[#6b7a99] hover:text-white hover:bg-white/5'
+                    }`}
                 >
-                  <span className={isSelected ? `text-black ${selectedIndex === 6 && 'text-white'}` : 'text-[#62618F]'}>
+                  <span className={`w-4 h-4 shrink-0 transition-colors
+                    ${isSelected ? 'text-white' : 'text-[#6b7a99] group-hover:text-white'}`}>
                     {item.icon}
                   </span>
-                  <span className={`font-medium ${isSelected ? `text-black ${selectedIndex === 6 && 'text-white'}` : 'text-[#62618F]'}`}>{item.text}</span>
+                  <span className={`text-sm font-medium transition-colors
+                    ${isSelected ? 'text-white' : 'text-[#6b7a99] group-hover:text-white'}`}>
+                    {item.text}
+                  </span>
                 </Link>
               );
             })}
           </ul>
-        </nav>
+        </div>
+
+        {/* Preferences section */}
+        <div>
+          <p className='text-[10px] font-semibold tracking-[0.15em] uppercase px-3 mb-2'
+            style={{ color: '#364156' }}>
+            Preferences
+          </p>
+          <ul className='flex flex-col gap-0.5'>
+            {prefItems.map((item) => {
+              const isSelected = selectedIndex === item.id;
+              const isLogout = item.id === 6; // adjust to your logout id
+              return (
+                <Link
+                  key={item.id}
+                  to={item.to}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 group
+                    ${isSelected && !isLogout ? 'bg-white/10 text-white' : ''}
+                    ${isLogout
+                      ? 'text-[#6b7a99] hover:text-red-400 hover:bg-red-500/10'
+                      : 'text-[#6b7a99] hover:text-white hover:bg-white/5'
+                    }`}
+                >
+                  <span className={`w-4 h-4 shrink-0 transition-colors
+                    ${isLogout
+                      ? 'group-hover:text-red-400'
+                      : isSelected ? 'text-white' : 'text-[#6b7a99] group-hover:text-white'
+                    }`}>
+                    {item.icon}
+                  </span>
+                  <span className={`text-sm font-medium transition-colors
+                    ${isLogout
+                      ? 'group-hover:text-red-400'
+                      : isSelected ? 'text-white' : 'text-[#6b7a99] group-hover:text-white'
+                    }`}>
+                    {item.text}
+                  </span>
+                </Link>
+              );
+            })}
+          </ul>
+        </div>
+
       </div>
 
-      {/* Fixed Help Center */}
-      <div className='bg-blue-500 px-4 py-6 flex flex-col items-center gap-5 text-white rounded-xl'>
-        <MessageCircleQuestion className='-mt-10 shadow-xl bg-blue-600 border-4 border-white rounded-full w-10 h-10' />
-        <div className='flex flex-col items-center gap-3'>
-          <h4 className='text-sm font-semibold'>Help Center</h4>
-          <p className='text-xs text-center leading-snug max-w-[180px]'>
-            Having trouble? Visit our help center for assistance with your account, tasks, and more.
-          </p>
-          <Link to={'/helpcenter'} className='bg-white text-blue-500 text-sm px-4 py-2 rounded-md'>
-            Go to Help center
-          </Link>
+      {/* Help Center card */}
+      <div className='mx-3 mb-5 rounded-xl p-4 flex flex-col gap-3'
+        style={{ background: '#151f32', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className='flex items-center gap-2'>
+          <div className='w-6 h-6 rounded-full flex items-center justify-center'
+            style={{ background: '#1e3a5f' }}>
+            <MessageCircleQuestion className='w-3.5 h-3.5 text-blue-400' />
+          </div>
+          <span className='text-white text-xs font-semibold'>Help Center</span>
         </div>
+        <p className='text-[11px] leading-relaxed' style={{ color: '#4a5a72' }}>
+          Access documentation and priority support.
+        </p>
+        <Link
+          to='/helpcenter'
+          className='text-center text-xs font-semibold py-2 rounded-lg transition-colors'
+          style={{ background: '#1a2d47', color: '#60a5fa' }}
+          onMouseEnter={e => e.currentTarget.style.background = '#1e3555'}
+          onMouseLeave={e => e.currentTarget.style.background = '#1a2d47'}
+        >
+          Get Assistance
+        </Link>
       </div>
+
     </div>
   );
 };
 
-
-export default SideMenu
+export default SideMenu;

@@ -4,8 +4,10 @@ import Messages from './Messages'
 import { useMessageStore } from '../Utils/useMessageStore'
 
 const MessagesContainer = ({ receiverId }) => {
+  const [messages, setMessages] = useState(dummyChat)
     const bottomRef = useRef(null)
-    const { messages } = useMessageStore();
+    const { fetchMessages } = useMessageStore();
+    us
 
     useEffect(()=> {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth'})

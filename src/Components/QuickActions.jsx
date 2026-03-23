@@ -3,23 +3,47 @@ import { PlusCircle, Compass, Mail } from 'lucide-react'
 import TaskUploadModal from './uploadtask/TaskUploadModal'
 import { Link } from 'react-router'
 
+const actions = [
+  { label: 'Upload Task', icon: PlusCircle, type: 'button' },
+  { label: 'Explore Tasks', icon: Compass, type: 'link', to: '/exploretasks' },
+  { label: 'Messages', icon: Mail, type: 'link', to: '/messages' },
+]
+
 const QuickActions = () => {
   const [showModal, setShowModal] = useState(false)
+
   return (
-    <div className="bg-white p-4 rounded-xl shadow-sm">
-      <h2 className="text-lg font-bold text-gray-800 mb-3">⚡ Quick Actions</h2>
-      <div className="flex flex-wrap gap-4">
-        <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-100 text-indigo-700 hover:bg-indigo-200 cursor-pointer"
-          onClick={(() => setShowModal(true))}>
-          <PlusCircle size={18}  /> Upload Task
-        </div> 
-        <Link className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-100 text-green-700 hover:bg-green-200"
-        to={'/exploretasks'}>
-          <Compass size={18} /> Explore Tasks
+    <div className="bg-white border border-gray-100 rounded-xl p-5">
+      {/* Header */}
+      <div className="flex items-center gap-2 mb-4">
+        <span className="text-sm">⚡</span>
+        <h2 className="text-sm font-semibold text-gray-800">Quick Actions</h2>
+      </div>
+
+      {/* Buttons */}
+      <div className="flex flex-col gap-2">
+        <button
+          onClick={() => setShowModal(true)}
+          className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-lg border border-gray-100 bg-gray-50 hover:bg-gray-100 transition-colors text-sm font-medium text-gray-700"
+        >
+          <PlusCircle size={15} className="text-gray-400" />
+          Upload Task
+        </button>
+
+        <Link
+          to="/exploretasks"
+          className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-lg border border-gray-100 bg-gray-50 hover:bg-gray-100 transition-colors text-sm font-medium text-gray-700"
+        >
+          <Compass size={15} className="text-gray-400" />
+          Explore Tasks
         </Link>
-        <Link className="flex items-center gap-2 px-4 py-2 rounded-lg bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
-        to={'/messages'}>
-          <Mail size={18} /> Messages
+
+        <Link
+          to="/messages"
+          className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-lg border border-gray-100 bg-gray-50 hover:bg-gray-100 transition-colors text-sm font-medium text-gray-700"
+        >
+          <Mail size={15} className="text-gray-400" />
+          Messages
         </Link>
       </div>
 

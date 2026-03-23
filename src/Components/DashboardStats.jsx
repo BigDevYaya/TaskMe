@@ -1,61 +1,73 @@
 import React from 'react'
-import {
-  CheckCircle,
-  UploadCloud,
-  Mail,
-  Wallet,
-} from 'lucide-react'
+import { CheckCircle, UploadCloud, Mail, Wallet } from 'lucide-react'
 import { useAuthStore } from '../Utils/useAuthStore'
 
-
-
-
-
-
-
 const DashboardStats = () => {
-  const { user } = useAuthStore();
+  const { user } = useAuthStore()
 
   const stats = [
-  {
-    title: 'Tasks Completed',
-    value: [... new Set(user?.completedTasks)]?.length || 0,
-    icon: <CheckCircle size={28} className="text-green-600" />,
-    bg: 'bg-green-50',
-  },  
-  {
-    title: 'Tasks Uploaded',
-    value: user?.uploadedTasks?.length || 0,
-    icon: <UploadCloud size={28} className="text-blue-600" />,
-    bg: 'bg-blue-50',
-  },
-  {
-    title: 'Earnings (₦)',
-    value: user?.totalEarnings || 0,
-    icon: <Wallet size={28} className="text-yellow-600" />,
-    bg: 'bg-yellow-50',
-  },
-  {
-    title: 'Unread Messages',
-    value: user?.unreadMessages || 0, // Add this to your user object if needed
-    icon: <Mail size={28} className="text-purple-600" />,
-    bg: 'bg-purple-50',
-  },
- ];
+    {
+      title: 'TASKS COMPLETED',
+      value: [...new Set(user?.completedTasks)]?.length || 0,
+      trend: '+12%',
+      trendUp: true,
+      icon: <CheckCircle size={16} className="text-gray-400" />,
+    },
+    {
+      title: 'TASKS UPLOADED',
+      value: user?.uploadedTasks?.length || 0,
+      trend: 'Steady',
+      trendUp: null,
+      icon: <UploadCloud size={16} className="text-gray-400" />,
+    },
+    {
+      title: 'EARNINGS (₦)',
+      value: user?.totalEarnings
+        ? `${(user.totalEarnings / 1000).toFixed(1)}k`
+        : 0,
+      trend: '+5.2%',
+      trendUp: true,
+      icon: <Wallet size={16} className="text-gray-400" />,
+    },
+    {
+      title: 'UNREAD MESSAGES',
+      value: user?.unreadMessages || 0,
+      trend: `${user?.unreadMessages || 0} New`,
+      trendUp: null,
+      icon: <Mail size={16} className="text-gray-400" />,
+    },
+  ]
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
       {stats.map((stat, idx) => (
         <div
           key={idx}
-          className={`p-4 rounded-xl shadow-sm border border-gray-100 ${stat.bg} flex items-center justify-between`}
+          className="bg-white border border-gray-100 rounded-xl p-4 flex flex-col justify-between gap-3"
         >
-          <div>
-            <h2 className="text-xl font-bold text-gray-800">{stat.value}</h2>
-            <p className="text-sm text-gray-500">{stat.title}</p>
-          </div>
-          <div className="p-2 rounded-full bg-white shadow-inner">
+          {/* Top row */}
+          <div className="flex items-start justify-between">
+            <p className="text-[10px] font-semibold tracking-[0.12em] text-gray-400">
+              {stat.title}
+            </p>
             {stat.icon}
           </div>
+
+          {/* Value */}
+          <p className="text-[28px] font-bold text-gray-900 leading-none">
+            {stat.value}
+          </p>
+
+          {/* Trend */}
+          <p className={`text-xs font-medium ${
+            stat.trendUp === true
+              ? 'text-emerald-500'
+              : stat.trendUp === false
+              ? 'text-red-400'
+              : 'text-gray-400'
+          }`}>
+            {stat.trend}
+          </p>
         </div>
       ))}
     </div>

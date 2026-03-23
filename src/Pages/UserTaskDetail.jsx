@@ -142,7 +142,7 @@ const UserTaskDetail = () => {
   }, [fetchTask, getSubmissions]);
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 min-h-screen" style={{ background: '#eef0f6' }}>
       <TaskInfoCard task={task} />
       <SubmissionsCard
         task={task}

@@ -2,35 +2,39 @@ import React from 'react';
 
 const TaskInfoCard = ({ task }) => {
   return (
-    <div className=" mx-auto bg-white rounded-xl p-6 sm:p-8 space-y-6 border border-gray-200 font-inter">
-      <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-800 text-center mb-6 border-b-2 border-gray-300 pb-3">
-        Task Information
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 text-gray-700">
-        <div className="flex flex-col p-3 bg-gray-50 rounded-lg">
-          <strong className="text-gray-600 text-lg sm:text-xl mb-1">Title:</strong>
-          <span className="text-gray-700 text-base sm:text-lg">{task.title}</span>
-        </div>
-        <div className="flex flex-col p-3 bg-gray-50 rounded-lg">
-          <strong className="text-gray-600 text-lg sm:text-xl mb-1">Category:</strong>
-          <span className="text-gray-700 text-base sm:text-lg">{task.category}</span>
-        </div>
-        <div className="flex flex-col p-3 bg-gray-50 rounded-lg">
-          <strong className="text-gray-600 text-lg sm:text-xl mb-1">Reward:</strong>
-          <span className="text-green-700 font-semibold text-base sm:text-lg">{task.commissionPrice}</span>
-        </div>
-        <div className="flex flex-col p-3 bg-gray-50 rounded-lg">
-          <strong className="text-gray-600 text-lg sm:text-xl mb-1">Created Date:</strong>
-          <span className="text-gray-700 text-base sm:text-lg">{task.createdAt?.seconds && new Date(task.createdAt * 1000).toDateString()}</span>
-        </div>
-        <div className="flex flex-col p-3 bg-gray-50 rounded-lg">
-          <strong className="text-gray-600 text-lg sm:text-xl mb-1">Deadline:</strong>
-          <span className="text-red-600 font-medium text-base sm:text-lg">{task.deadline}</span>
-        </div>
+    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden font-inter">
+      {/* Header */}
+      <div className="px-5 py-4 border-b border-gray-200">
+        <h2 className="text-sm font-semibold text-gray-900">Task Details</h2>
       </div>
-      <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-        <strong className="text-gray-600 text-lg sm:text-xl mb-2 block">Description:</strong>
-        <p className="text-gray-700 text-base sm:text-lg leading-relaxed">{task.description}</p>
+      
+      {/* Content */}
+      <div className="p-5">
+        <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-6">
+          <div>
+            <dt className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1">Title</dt>
+            <dd className="text-sm text-gray-900">{task.title}</dd>
+          </div>
+          <div>
+            <dt className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1">Category</dt>
+            <dd className="text-sm text-gray-900">{task.category}</dd>
+          </div>
+          <div>
+            <dt className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1">Reward</dt>
+            <dd className="text-sm font-medium text-green-600">{task.commissionPrice}</dd>
+          </div>
+          <div>
+            <dt className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1">Deadline</dt>
+            <dd className="text-sm text-gray-900">{task.deadline}</dd>
+          </div>
+          
+          <div className="sm:col-span-2 lg:col-span-4 border-t border-gray-100 pt-6 mt-2">
+            <dt className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Description</dt>
+            <dd className="text-sm text-gray-700 leading-relaxed max-w-3xl whitespace-pre-wrap">
+              {task.description}
+            </dd>
+          </div>
+        </dl>
       </div>
     </div>
   );

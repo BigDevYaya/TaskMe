@@ -1,35 +1,45 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import SubmissionItem from './SubmissionItem'
 
 const SubmissionsCard = ({ task, submissions, pendingUsers, approvedUsers, onApprove, onReject }) => {
-  const [users, setUsers] = useState([]);
-  
   return (
-    <div className="bg-white rounded-lg border border-gray-200 font-inter p-6 space-y-4">
-    <h2 className="text-2xl font-semibold">Submissions</h2>
-    <div className="grid grid-cols-3 gap-4">
-      <div><strong>Pending:</strong> {pendingUsers?.length || 0}</div>
-      <div><strong>Approved:</strong> {approvedUsers?.length || 0}</div>
-    </div>
+    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden font-inter">
+      {/* Header */}
+      <div className="px-5 py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <h2 className="text-sm font-semibold text-gray-900">Submissions Review</h2>
+        
+        {/* Simple Stats */}
+        <div className="flex gap-4 text-xs font-medium text-gray-500">
+          <div className="flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-yellow-400"></span>
+            Pending: <span className="text-gray-900">{pendingUsers?.length || 0}</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+            Approved: <span className="text-gray-900">{approvedUsers?.length || 0}</span>
+          </div>
+        </div>
+      </div>
 
-    <h3 className="text-xl font-medium mt-6">User Submissions</h3>
-    <div className="space-y-4 max-h-80 overflow-y-auto">
-        {
-          submissions.length ?
+      {/* List */}
+      <div className="divide-y divide-gray-100 max-h-96 overflow-y-auto">
+        {submissions.length > 0 ? (
           submissions.map(submission => 
             <SubmissionItem
-              task={task}
               key={submission.id}
-              approvedUsers={approvedUsers}
-              pendingUsers={pendingUsers}
+              task={task}
               submission={submission}
               onApprove={onApprove}
               onReject={onReject}
             />
-          ) : <div className='text-gray-500 w-full h-9 flex items-center justify-center'>Submission appear here</div>
-        }
+          )
+        ) : (
+          <div className="p-8 text-center text-sm text-gray-500">
+            No submissions to review yet.
+          </div>
+        )}
+      </div>
     </div>
-  </div>
   )
 }
 

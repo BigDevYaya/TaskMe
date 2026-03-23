@@ -40,7 +40,8 @@ export default function TaskDetailPage() {
   if (!taskDetails) return <p className="p-6 text-center">Task not found.</p>
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-6">
+  <div className='min-h-screen w-full' style={{ background : '#eef0f6' }}>
+    <div className="p-6 max-w-4xl w-full mx-auto space-y-6" >
       <TaskHeader
         title={taskDetails.title}
         category={taskDetails.category}
@@ -61,5 +62,6 @@ export default function TaskDetailPage() {
       taskId={taskId} 
       />
     </div>
+  </div>
   )
 }
